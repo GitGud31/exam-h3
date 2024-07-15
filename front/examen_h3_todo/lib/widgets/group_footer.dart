@@ -2,6 +2,7 @@ import 'package:appflowy_board/appflowy_board.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
+import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:examen_h3_todo/widgets/text_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,23 +23,24 @@ class GroupFooter extends ConsumerWidget {
 
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add New Task'),
-          content: TextField(
-            controller: taskController,
-            decoration: const InputDecoration(hintText: 'Enter task name'),
+      builder: (_) => AlertDialog(
+        title: const Text('Add New Task'),
+        backgroundColor: Colors.white,
+        content: TextField(
+          controller: taskController,
+          decoration: const InputDecoration(hintText: 'Enter task name'),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => context.maybePop(),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => context.maybePop(),
-            ),
-            TextButton(
-              child: const Text('Add'),
-              onPressed: () {
-                final newTaskName = taskController.text.trim();
+          TextButton(
+            child: const Text('Add'),
+            onPressed: () {
+              final newTaskName = taskController.text.trim();
 
+              if (newTaskName.isNotEmpty) {
                 ref
                     .read(boardControllerP)
                     .addGroupItem(columnData.id, TextItem(newTaskName));
@@ -52,11 +54,13 @@ class GroupFooter extends ConsumerWidget {
                 taskController.clear();
 
                 context.maybePop();
-              },
-            ),
-          ],
-        );
-      },
+              } else {
+                Bar.error(ref, context, "Task name cannot be empty");
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 

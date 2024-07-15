@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/widgets/task_board_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
@@ -16,7 +17,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.person_pin_rounded),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 72),
+          child: Icon(Icons.circle, size: 45, color: Colors.white),
+        ),
+        backgroundColor: Colors.blue[800],
+        title: const Text(
+          'Examen H3 Todo',
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
       ),
       body: Container(
         alignment: Alignment.center,
