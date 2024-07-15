@@ -1,90 +1,42 @@
+import 'package:examen_h3_todo/controllers/board_controller.dart';
+import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
+import 'package:examen_h3_todo/dummy/data.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
-import 'package:examen_h3_todo/widgets/rich_text_item.dart';
-import 'package:examen_h3_todo/widgets/text_item.dart';
 
 import 'package:flutter/material.dart';
 import 'package:appflowy_board/appflowy_board.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TaskBoardBuilder extends StatefulWidget {
+class TaskBoardBuilder extends ConsumerStatefulWidget {
   const TaskBoardBuilder({super.key});
 
   @override
-  State<TaskBoardBuilder> createState() => _TaskBoardBuilderState();
+  ConsumerState<TaskBoardBuilder> createState() => _TaskBoardBuilderState();
 }
 
-class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
-  final AppFlowyBoardController controller = AppFlowyBoardController(
-    onMoveGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
-      debugPrint('Move item from $fromIndex to $toIndex');
-    },
-    onMoveGroupItem: (groupId, fromIndex, toIndex) {
-      debugPrint('Move $groupId:$fromIndex to $groupId:$toIndex');
-    },
-    onMoveGroupItemToGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
-      debugPrint('Move $fromGroupId:$fromIndex to $toGroupId:$toIndex');
-    },
-  );
-
+class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   final config = const AppFlowyBoardConfig(
     groupBackgroundColor: Colors.white,
     stretchGroupHeight: false,
   );
 
-  late AppFlowyBoardScrollController boardController;
-
   @override
   void initState() {
     super.initState();
-    boardController = AppFlowyBoardScrollController();
 
-    final todoGroup = AppFlowyGroupData(
-      id: "To Do",
-      name: "To Do",
-      items: [
-        TextItem("Card 1"),
-        TextItem("Card 2"),
-        RichTextItem(title: "Card 3", subtitle: 'Aug 1, 2020 4:05 PM'),
-        TextItem("Card 4"),
-        TextItem("Card 5"),
-      ],
-    );
-
-    final inProgressGroup = AppFlowyGroupData(
-      id: "In Progress",
-      name: "In Progress",
-      items: <AppFlowyGroupItem>[
-        TextItem("Card 6"),
-        RichTextItem(title: "Card 7", subtitle: 'Aug 1, 2020 4:05 PM'),
-        RichTextItem(title: "Card 8", subtitle: 'Aug 1, 2020 4:05 PM'),
-      ],
-    );
-
-    final doneGroup = AppFlowyGroupData(
-      id: "Done",
-      name: "Done",
-      items: <AppFlowyGroupItem>[
-        TextItem("Card 9"),
-        RichTextItem(
-          title: "Card 10",
-          subtitle: 'Aug 1, 2020 4:05 PM',
-        ),
-        TextItem("Card 11"),
-        TextItem("Card 12"),
-      ],
-    );
-
-    controller.addGroup(todoGroup);
-    controller.addGroup(inProgressGroup);
-    controller.addGroup(doneGroup);
+    ref.read(boardControllerP).addGroup(todoGroup);
+    ref.read(boardControllerP).addGroup(inProgressGroup);
+    ref.read(boardControllerP).addGroup(doneGroup);
   }
 
   @override
   Widget build(BuildContext context) {
     return AppFlowyBoard(
-      controller: controller,
-      boardScrollController: boardController,
+      controller: ref.read(boardControllerP),
+      boardScrollController: ref.read(boardScrollControllerP),
       config: config,
       groupConstraints: BoxConstraints.tightFor(
         width: MediaQuery.sizeOf(context).width * 0.3,
@@ -97,7 +49,6 @@ class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
 
       //header
       headerBuilder: (_, columnData) => GroupHeader(
-        controller: controller,
         config: config,
         columnData: columnData,
       ),
@@ -105,7 +56,6 @@ class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
       //footer
       footerBuilder: (_, columnData) => GroupFooter(
         config: config,
-        boardController: boardController,
         columnData: columnData,
       ),
     );

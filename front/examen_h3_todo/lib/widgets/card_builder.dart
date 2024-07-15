@@ -18,6 +18,7 @@ class CardBuilder extends ConsumerWidget {
     // card with title only.
     if (item is TextItem) {
       return Card(
+        elevation: 3,
         color: Colors.blueGrey.shade100,
         child: Align(
           alignment: Alignment.centerLeft,
@@ -35,6 +36,7 @@ class CardBuilder extends ConsumerWidget {
     // card with title and date.
     if (item is RichTextItem) {
       return Card(
+        elevation: 3,
         color: Colors.blueGrey.shade300,
         child: TaskCardBuilder(item: item),
       );

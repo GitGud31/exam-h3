@@ -5,12 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class GroupHeader extends ConsumerWidget {
   const GroupHeader({
     super.key,
-    required this.controller,
     required this.config,
     required this.columnData,
   });
 
-  final AppFlowyBoardController controller;
   final AppFlowyBoardConfig config;
   final AppFlowyGroupData<dynamic> columnData;
 

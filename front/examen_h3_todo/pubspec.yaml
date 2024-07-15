@@ -38,6 +38,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   auto_route: ^8.2.0
   appflowy_board: ^0.1.2
+  logger: ^2.3.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
