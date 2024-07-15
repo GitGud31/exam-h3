@@ -1,12 +1,11 @@
+import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
 import 'package:examen_h3_todo/widgets/rich_text_item.dart';
 import 'package:examen_h3_todo/widgets/text_item.dart';
+
 import 'package:flutter/material.dart';
-
 import 'package:appflowy_board/appflowy_board.dart';
-
-import 'task_card_builder.dart';
 
 class TaskBoardBuilder extends StatefulWidget {
   const TaskBoardBuilder({super.key});
@@ -67,7 +66,10 @@ class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
       name: "Done",
       items: <AppFlowyGroupItem>[
         TextItem("Card 9"),
-        RichTextItem(title: "Card 10", subtitle: 'Aug 1, 2020 4:05 PM'),
+        RichTextItem(
+          title: "Card 10",
+          subtitle: 'Aug 1, 2020 4:05 PM',
+        ),
         TextItem("Card 11"),
         TextItem("Card 12"),
       ],
@@ -82,11 +84,16 @@ class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
   Widget build(BuildContext context) {
     return AppFlowyBoard(
       controller: controller,
+      boardScrollController: boardController,
+      config: config,
+      groupConstraints: BoxConstraints.tightFor(
+        width: MediaQuery.sizeOf(context).width * 0.3,
+      ),
+
       cardBuilder: (context, group, groupItem) => AppFlowyGroupCard(
         key: ValueKey(groupItem.id),
-        child: _buildCard(groupItem),
+        child: CardBuilder(item: groupItem),
       ),
-      boardScrollController: boardController,
 
       //header
       headerBuilder: (_, columnData) => GroupHeader(
@@ -101,29 +108,6 @@ class _TaskBoardBuilderState extends State<TaskBoardBuilder> {
         boardController: boardController,
         columnData: columnData,
       ),
-
-      groupConstraints: BoxConstraints.tightFor(
-        width: MediaQuery.sizeOf(context).width * 0.3,
-      ),
-      config: config,
     );
-  }
-
-  Widget _buildCard(AppFlowyGroupItem item) {
-    if (item is TextItem) {
-      return Card(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: Text(item.s),
-          ),
-        ),
-      );
-    }
-
-    if (item is RichTextItem) return TaskCardBuilder(item: item);
-
-    throw UnimplementedError();
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TaskCardBuilder extends ConsumerStatefulWidget {
-  final RichTextItem item;
+  final dynamic item;
 
   const TaskCardBuilder({required this.item, super.key});
 
@@ -14,6 +14,8 @@ class TaskCardBuilder extends ConsumerStatefulWidget {
 class _TaskCardBuilderState extends ConsumerState<TaskCardBuilder> {
   @override
   Widget build(BuildContext context) {
+    final richItem = widget.item as RichTextItem;
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -22,14 +24,14 @@ class _TaskCardBuilderState extends ConsumerState<TaskCardBuilder> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.item.title,
+              richItem.title,
               style: const TextStyle(fontSize: 14),
               textAlign: TextAlign.left,
             ),
             const SizedBox(height: 10),
             Text(
-              widget.item.subtitle,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              richItem.subtitle,
+              style: const TextStyle(fontSize: 12, color: Colors.black),
             )
           ],
         ),

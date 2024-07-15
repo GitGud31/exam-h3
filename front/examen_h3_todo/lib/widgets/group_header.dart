@@ -17,23 +17,14 @@ class GroupHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppFlowyGroupHeader(
-      //icon: const Icon(Icons.lightbulb_circle),
-      title: SizedBox(
-        width: 60,
-        child: TextField(
-          controller: TextEditingController()
-            ..text = columnData.headerData.groupName,
-          onSubmitted: (val) {
-            controller
-                .getGroupController(columnData.headerData.groupId)!
-                .updateGroupName(val);
-          },
+      margin: config.groupBodyPadding,
+      title: Container(
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          columnData.headerData.groupName,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
-      addIcon: const Icon(Icons.add, size: 20),
-      moreIcon: const Icon(Icons.more_horiz, size: 20),
-      height: 50,
-      margin: config.groupBodyPadding,
     );
   }
 }

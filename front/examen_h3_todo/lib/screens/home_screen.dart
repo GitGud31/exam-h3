@@ -15,9 +15,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(
-        backgroundColor: Colors.red,
-        shadowColor: Colors.red,
+      appBar: AppBar(
+        leading: const Icon(Icons.person_pin_rounded),
       ),
       body: Container(
         alignment: Alignment.center,
