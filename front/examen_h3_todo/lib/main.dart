@@ -1,10 +1,13 @@
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import 'controllers/scaffold_messenger_controller.dart';
 
 void main() {
+  setPathUrlStrategy();
+
   runApp(const ProviderScope(child: App()));
 }
 

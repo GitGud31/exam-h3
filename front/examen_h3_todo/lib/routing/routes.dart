@@ -1,0 +1,8 @@
+class Routes {
+  static const String home = "/home";
+  static const String login = "/login";
+  static const String signup = "/signup";
+  static const String addTask = "/add-task";
+  static const String editTask = "/edit-task";
+  static const String addProfile = "/add-profile";
+}
