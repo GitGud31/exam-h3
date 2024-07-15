@@ -1,4 +1,5 @@
 import 'package:appflowy_board/appflowy_board.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/widgets/text_item.dart';
@@ -15,6 +16,50 @@ class GroupFooter extends ConsumerWidget {
   final AppFlowyBoardConfig config;
   final AppFlowyGroupData<dynamic> columnData;
 
+  void addTask(BuildContext context, WidgetRef ref,
+      AppFlowyGroupData<dynamic> columnData) {
+    final TextEditingController taskController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add New Task'),
+          content: TextField(
+            controller: taskController,
+            decoration: const InputDecoration(hintText: 'Enter task name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => context.maybePop(),
+            ),
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                final newTaskName = taskController.text.trim();
+
+                ref
+                    .read(boardControllerP)
+                    .addGroupItem(columnData.id, TextItem(newTaskName));
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ref
+                      .read(boardScrollControllerP)
+                      .scrollToBottom(columnData.id);
+                });
+
+                taskController.clear();
+
+                context.maybePop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -30,13 +75,7 @@ class GroupFooter extends ConsumerWidget {
           'Add task',
           style: TextStyle(fontStyle: FontStyle.italic),
         ),
-        onAddButtonClick: () {
-          ref.read(boardScrollControllerP).scrollToBottom(columnData.id);
-
-          ref
-              .read(boardControllerP)
-              .addGroupItem(columnData.id, TextItem(UniqueKey().toString()));
-        },
+        onAddButtonClick: () => addTask(context, ref, columnData),
       ),
     );
   }

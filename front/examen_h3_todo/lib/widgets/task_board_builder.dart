@@ -1,7 +1,6 @@
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/dummy/data.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
