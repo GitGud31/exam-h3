@@ -1,0 +1,123 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-1">
+        <createSequence incrementBy="50" sequenceName="profile_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-2">
+        <createSequence incrementBy="50" sequenceName="project_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-3">
+        <createSequence incrementBy="50" sequenceName="sub_task_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-4">
+        <createSequence incrementBy="50" sequenceName="task_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-5">
+        <createTable tableName="profile">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="profilePK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-6">
+        <createTable tableName="project">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projectPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-7">
+        <createTable tableName="project_profile">
+            <column name="profile_id" type="BIGINT"/>
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="project_profilePK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-8">
+        <createTable tableName="sub_task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="sub_taskPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="is_checked" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-9">
+        <createTable tableName="task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="taskPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deadline" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="priority" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="creator_id" type="BIGINT"/>
+            <column name="project_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-10">
+        <createTable tableName="task_guests">
+            <column name="task_guest_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-11">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="task_guests" constraintName="FK56w4f72bc1qtbgcjbegd6gm9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="profile" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-12">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="sub_task" constraintName="FKdytg4t1ohm3qxnshcyxu54f7t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-13">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="task" constraintName="FKk8qrwowg31kx7hp93sru1pdqa" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="project" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-14">
+        <addForeignKeyConstraint baseColumnNames="creator_id" baseTableName="task" constraintName="FKphmy3yp9536kjuei92u2hli6v" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="profile" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-15">
+        <addForeignKeyConstraint baseColumnNames="task_guest_id" baseTableName="task_guests" constraintName="FKqgay7sm646p9npibxu4r8y9oh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-16">
+        <addForeignKeyConstraint baseColumnNames="profile_id" baseTableName="project_profile" constraintName="FKs22kiclajj3aoydng1lcvvul7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="profile" validate="true"/>
+    </changeSet>
+    <changeSet author="elmehdiyazid (generated)" id="1721139842835-17">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="project_profile" constraintName="FKur19nqcy3kfwcbcnn36m4u8x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="project" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

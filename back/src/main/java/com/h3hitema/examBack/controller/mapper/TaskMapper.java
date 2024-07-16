@@ -8,7 +8,6 @@ public class TaskMapper {
     public static TaskDto toDto(Task task){
         return TaskDto.builder()
                 .description(task.getDescription())
-                .createdAt(task.getCreatedAt())
                 .id(task.getId())
                 .build();
     }
@@ -16,8 +15,6 @@ public class TaskMapper {
     public static Task toEntity(TaskDto dto){
         return Task.builder()
                 .description(dto.getDescription())
-                .createdAt(dto.getCreatedAt())
-                .id(dto.getId())
                 .build();
     }
 }

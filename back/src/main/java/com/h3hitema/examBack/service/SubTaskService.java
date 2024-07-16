@@ -5,9 +5,11 @@ import com.h3hitema.examBack.model.Task;
 import com.h3hitema.examBack.repository.SubTaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,11 @@ public class SubTaskService {
     }
 
     public SubTask updateSubTask(Long id, SubTask subTaskDetails) {
-       return subTaskRepository.save(this.getSubTaskById(id).updateSubTask(subTaskDetails));
+        SubTask subTask = this.getSubTaskById(id);
+        if (!Objects.equals(subTask.getVersion(), subTaskDetails.getVersion())) {
+            throw new OptimisticLockingFailureException("Conflict");
+        }
+       return subTaskRepository.save(subTask.updateSubTask(subTaskDetails));
     }
 
     public void deleteSubTask(Long id) {

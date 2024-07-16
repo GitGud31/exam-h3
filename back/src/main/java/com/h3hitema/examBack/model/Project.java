@@ -1,9 +1,10 @@
 package com.h3hitema.examBack.model;
 
+import com.h3hitema.examBack.model.commun.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,10 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Project extends AbstractEntity {
 
     @ManyToOne
     @JoinTable(
@@ -27,9 +25,9 @@ public class Project {
     private Profile profile;
 
     @OneToMany(mappedBy = "project")
-    private Set<Task> tasks;
+    @Builder.Default
+    private Set<Task> tasks = new HashSet<>();
     private String description;
-    private LocalDateTime createdAt;
 
     public Project updateProject(Project project){
         this.description = project.getDescription();

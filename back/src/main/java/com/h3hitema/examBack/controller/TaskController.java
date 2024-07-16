@@ -32,6 +32,11 @@ public record TaskController(TaskService taskService) {
         return TaskMapper.toDto(taskService.updateTask(id, TaskMapper.toEntity(taskDetails)));
     }
 
+    @PutMapping("tasks/{id}/profile_guest/{idProfile}")
+    public TaskDto updateTaskGuest(@PathVariable Long id, @PathVariable Long idProfile) {
+        return TaskMapper.toDto(taskService.updateTaskGuests(id, idProfile));
+    }
+
     @DeleteMapping("tasks{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);

@@ -1,10 +1,11 @@
 package com.h3hitema.examBack.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import com.h3hitema.examBack.model.commun.AbstractEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -14,26 +15,23 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Profile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Email
+public class Profile extends AbstractEntity {
+
     private String email;
     private String firstName;
     private String lastName;
     private String password;
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "profile")
     private Set<Project> projects;
 
-    public Profile updateProfile(Profile profile){
+    public Profile updateProfile(Profile profile, String encryptedPwd){
         this.setEmail(profile.getEmail());
         this.setFirstName(profile.getFirstName());
         this.setLastName(profile.getLastName());
-        this.setPassword(profile.getPassword());
+        this.setPassword(encryptedPwd);
         this.setCreatedAt(profile.getCreatedAt());
+        this.setVersion(profile.getVersion());
         return this;
     }
 }

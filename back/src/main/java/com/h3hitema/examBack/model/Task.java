@@ -1,9 +1,12 @@
 package com.h3hitema.examBack.model;
 
+import com.h3hitema.examBack.model.commun.AbstractEntity;
+import com.h3hitema.examBack.model.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -14,11 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Task  extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private State state;
 
@@ -36,8 +35,16 @@ public class Task {
     private String title;
     private String description;
     private String priority;
-    private LocalDateTime createdAt;
     private String deadline;
+
+    @ManyToMany
+    @JoinTable(
+            name = "task_guests",
+            joinColumns = @JoinColumn(name = "task_guest_id"),
+            inverseJoinColumns = @JoinColumn(name = "id")
+    )
+    @Builder.Default
+    private List<Profile> taskGuests = new ArrayList<>();
 
     //TODO
     public Task updateTask(Task task){

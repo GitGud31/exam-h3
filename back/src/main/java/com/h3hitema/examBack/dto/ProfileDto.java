@@ -18,7 +18,7 @@ public class ProfileDto {
     private String lastName;
     private String password;
     private LocalDateTime createdAt;
-
-    //TODO
+    private Integer version;
+    @Builder.Default
     private Set<ProjectDto> projects = new HashSet<>();
 }
