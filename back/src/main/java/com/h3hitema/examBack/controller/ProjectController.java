@@ -8,25 +8,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profiles/")
+@RequestMapping("/profiles/projects/")
 public record ProjectController(ProjectService projectService) {
-    @GetMapping("projects")
+    @GetMapping("")
     public List<ProjectDto> getAllProjects() {
         return projectService.getAllProjects().stream().map(ProjectMapper::toDto).toList();
     }
 
-    @GetMapping("projects/{id}")
+    @GetMapping("/{id}")
     public ProjectDto getProjectById(@PathVariable Long id) {
         return ProjectMapper.toDto(projectService.getProjectById(id));
     }
 
-    @PostMapping("{idProfile}/projects")
+    @PostMapping("profile/{idProfile}")
     public ProjectDto createProject(@PathVariable Long idProfile,
                                     @RequestBody ProjectDto projectDto) {
         return ProjectMapper.toDto(projectService.saveProject(idProfile, ProjectMapper.toEntity(projectDto)));
     }
 
-    @PutMapping("projects/{idProject}")
+    @PutMapping("profile/{idProject}")
     public ProjectDto updateProject(@PathVariable Long idProject,
                                     @RequestBody ProjectDto projectDetailsDto) {
         return ProjectMapper.toDto(projectService.updateProject(idProject, ProjectMapper.toEntity(projectDetailsDto)));

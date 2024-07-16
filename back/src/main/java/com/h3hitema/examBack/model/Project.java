@@ -16,18 +16,18 @@ import java.util.Set;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinTable(
-            name = "project_user",
+            name = "project_profile",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
     private Profile profile;
 
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks;
-    private Long id;
     private String description;
     private LocalDateTime createdAt;
 
