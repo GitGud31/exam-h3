@@ -4,7 +4,9 @@ import com.h3hitema.examBack.model.Profile;
 import com.h3hitema.examBack.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class ProfileService {
     }
 
     public Profile createProfile(Profile profile) {
+        if (profileRepository.existsByEmail(profile.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email must be unique");
+        }
         return profileRepository.save(profile);
     }
 

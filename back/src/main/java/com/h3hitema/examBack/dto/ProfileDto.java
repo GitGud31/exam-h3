@@ -3,6 +3,7 @@ package com.h3hitema.examBack.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -19,5 +20,5 @@ public class ProfileDto {
     private LocalDateTime createdAt;
 
     //TODO
-    private Set<ProjectDto> projects;
+    private Set<ProjectDto> projects = new HashSet<>();
 }
