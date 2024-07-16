@@ -5,7 +5,9 @@ import com.h3hitema.examBack.model.Task;
 import com.h3hitema.examBack.repository.SubTaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class SubTaskService {
     }
 
     public SubTask createSubTask(Long idTask, SubTask subTask) {
+        if (subTaskRepository.existsById(idTask)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "SubTask already exists !");
+        }
         Task currentTask = taskService.getTaskById(idTask);
         currentTask.getSubTasks().add(subTask);
         subTask.setTask(currentTask);

@@ -5,7 +5,9 @@ import com.h3hitema.examBack.model.Project;
 import com.h3hitema.examBack.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class ProjectService {
     }
 
     public Project saveProject(Long idProfile, Project project) {
+        if (projectRepository.existsById(project.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Project already exists !");
+        }
         Profile currentProfile = profileService.getProfileById(idProfile);
         // currentProfile.getProjects().add(project);
         project.setProfile(currentProfile);
