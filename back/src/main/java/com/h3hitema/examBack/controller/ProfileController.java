@@ -1,42 +1,38 @@
 package com.h3hitema.examBack.controller;
 
-import com.h3hitema.examBack.model.Profile;
+import com.h3hitema.examBack.controller.mapper.ProfileMapper;
+import com.h3hitema.examBack.dto.ProfileDto;
 import com.h3hitema.examBack.service.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/profiles")
-public class ProfileController {
-    @Autowired
-    private ProfileService profileService;
+public record ProfileController(ProfileService profileService) {
 
     @GetMapping
-    public List<Profile> getAllProfiles() {
-        return profileService.getAllProfiles();
+    public List<ProfileDto> getAllProfiles() {
+        return profileService.getAllProfiles().stream().map(ProfileMapper::toDto).toList();
     }
 
     @GetMapping("/{id}")
-    public Profile getProfileById(@PathVariable Long id) {
-        return profileService.getProfileById(id).orElse(null);
+    public ProfileDto getProfileById(@PathVariable Long id) {
+        return ProfileMapper.toDto(profileService.getProfileById(id));
     }
 
     @PostMapping
-    public Profile createProfile(@RequestBody Profile profile) {
-        return profileService.saveProfile(profile);
+    public ProfileDto createProfile(@RequestBody ProfileDto profileDto) {
+        return ProfileMapper.toDto(profileService.createProfile(ProfileMapper.toEntity(profileDto)));
     }
 
     @PutMapping("/{id}")
-    public Profile updateProfile(@PathVariable Long id, @RequestBody Profile profileDetails) {
-        return profileService.updateProfile(id, profileDetails);
+    public ProfileDto updateProfile(@PathVariable Long id, @RequestBody ProfileDto profileDetailsDto) {
+        return ProfileMapper.toDto(profileService.updateProfile(id, ProfileMapper.toEntity(profileDetailsDto)));
     }
 
     @DeleteMapping("/{id}")
     public void deleteProfile(@PathVariable Long id) {
         profileService.deleteProfile(id);
     }
-
-    // Additional endpoints
 }

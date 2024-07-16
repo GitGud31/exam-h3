@@ -10,14 +10,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProfileDto {
+public class ProjectDto {
     private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
+    private String description;
     private LocalDateTime createdAt;
+    private Set<TaskDto> tasks;
 
-    //TODO
-    private Set<ProjectDto> projects;
 }

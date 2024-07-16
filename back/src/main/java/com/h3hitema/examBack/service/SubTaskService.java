@@ -1,41 +1,38 @@
 package com.h3hitema.examBack.service;
 
 import com.h3hitema.examBack.model.SubTask;
+import com.h3hitema.examBack.model.Task;
 import com.h3hitema.examBack.repository.SubTaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(rollbackOn = Exception.class)
 public class SubTaskService {
-    @Autowired
-    private SubTaskRepository subTaskRepository;
 
+    private final SubTaskRepository subTaskRepository;
+    private final TaskService taskService;
     public List<SubTask> getAllSubTasks() {
         return subTaskRepository.findAll();
     }
 
     public SubTask getSubTaskById(Long id) {
-        return subTaskRepository.findById(id).orElse(null);
+        return subTaskRepository.findById(id).orElseThrow();
     }
 
-    public SubTask saveSubTask(SubTask subTask) {
+    public SubTask createSubTask(Long idTask, SubTask subTask) {
+        Task currentTask = taskService.getTaskById(idTask);
+        currentTask.getSubTasks().add(subTask);
+        subTask.setTask(currentTask);
         return subTaskRepository.save(subTask);
     }
 
     public SubTask updateSubTask(Long id, SubTask subTaskDetails) {
-        return subTaskRepository.findById(id)
-                .map(subTask -> {
-                    subTask.setDescription(subTaskDetails.getDescription());
-                    subTask.setChecked(subTaskDetails.isChecked());
-                    subTask.setCreatedAt(subTaskDetails.getCreatedAt());
-                    return subTaskRepository.save(subTask);
-                })
-                .orElseGet(() -> {
-                    subTaskDetails.setId(id);
-                    return subTaskRepository.save(subTaskDetails);
-                });
+       return subTaskRepository.save(this.getSubTaskById(id).updateSubTask(subTaskDetails));
     }
 
     public void deleteSubTask(Long id) {

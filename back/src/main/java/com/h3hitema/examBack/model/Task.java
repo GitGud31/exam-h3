@@ -1,20 +1,26 @@
 package com.h3hitema.examBack.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 
+
 @Entity
+@Table
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String description;
-    private String state;
-    private String priority;
-    private String createdAt;
-    private String deadline;
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -27,60 +33,20 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private Set<SubTask> subTasks;
 
-    public String getTitle() {
-        return title;
+    private String title;
+    private String description;
+    private String priority;
+    private LocalDateTime createdAt;
+    private String deadline;
+
+    //TODO
+    public Task updateTask(Task task){
+        this.description = task.getDescription();
+        this.title = task.getTitle();
+        this.priority = task.getPriority();
+        this.deadline = task.getDeadline();
+        this.state = task.getState();
+        return this;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-// Getters and Setters
 }

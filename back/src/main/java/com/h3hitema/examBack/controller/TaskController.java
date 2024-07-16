@@ -1,42 +1,39 @@
 package com.h3hitema.examBack.controller;
 
+import com.h3hitema.examBack.controller.mapper.TaskMapper;
+import com.h3hitema.examBack.dto.TaskDto;
 import com.h3hitema.examBack.model.Task;
 import com.h3hitema.examBack.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tasks")
-public class TaskController {
-    @Autowired
-    private TaskService taskService;
-
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+@RequestMapping("/profiles/projects/")
+public record TaskController(TaskService taskService) {
+    @GetMapping("tasks")
+    public List<TaskDto> getAllTasks() {
+        return taskService.getAllTasks().stream().map(TaskMapper::toDto).toList();
     }
 
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    @GetMapping("tasks/{id}")
+    public TaskDto getTaskById(@PathVariable Long id) {
+        return TaskMapper.toDto(taskService.getTaskById(id));
     }
 
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.saveTask(task);
+    // TODO: id project
+    @PostMapping("{idProject}/tasks")
+    public TaskDto createTask(@PathVariable Long idProject, @RequestBody Task task) {
+        return TaskMapper.toDto(taskService.createTask(idProject, task));
     }
 
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
-        return taskService.updateTask(id, taskDetails);
+    @PutMapping("tasks/{id}")
+    public TaskDto updateTask(@PathVariable Long id, @RequestBody TaskDto taskDetails) {
+        return TaskMapper.toDto(taskService.updateTask(id, TaskMapper.toEntity(taskDetails)));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("tasks{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
-
-    // Additional endpoints
 }

@@ -1,23 +1,20 @@
 package com.h3hitema.examBack.dto;
 
+
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProfileDto {
+public class SubTaskDto {
     private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
+
+    private String description;
+    private boolean isChecked;
     private LocalDateTime createdAt;
 
-    //TODO
-    private Set<ProjectDto> projects;
 }

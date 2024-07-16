@@ -1,42 +1,40 @@
 package com.h3hitema.examBack.controller;
 
-import com.h3hitema.examBack.model.SubTask;
+import com.h3hitema.examBack.controller.mapper.SubTaskMapper;
+import com.h3hitema.examBack.dto.SubTaskDto;
 import com.h3hitema.examBack.service.SubTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/subtasks")
-public class SubTaskController {
-    @Autowired
-    private SubTaskService subTaskService;
+@RequestMapping("profiles/projects/tasks/")
+public record SubTaskController(SubTaskService subTaskService) {
 
-    @GetMapping
-    public List<SubTask> getAllSubTasks() {
-        return subTaskService.getAllSubTasks();
+    @GetMapping("subtasks")
+    public List<SubTaskDto> getAllSubTasks() {
+        return subTaskService.getAllSubTasks().stream().map(SubTaskMapper::toDto).toList();
     }
 
-    @GetMapping("/{id}")
-    public SubTask getSubTaskById(@PathVariable Long id) {
-        return subTaskService.getSubTaskById(id);
+    @GetMapping("subtasks/{id}")
+    public SubTaskDto getSubTaskById(@PathVariable Long id) {
+        return SubTaskMapper.toDto(subTaskService.getSubTaskById(id));
     }
 
-    @PostMapping
-    public SubTask createSubTask(@RequestBody SubTask subTask) {
-        return subTaskService.saveSubTask(subTask);
+    @PostMapping("{idTask}/subtasks")
+    public SubTaskDto createSubTask(
+            @PathVariable Long idTask,
+            @RequestBody SubTaskDto subTask) {
+        return SubTaskMapper.toDto(subTaskService.createSubTask(idTask, SubTaskMapper.toEntity(subTask)));
     }
 
-    @PutMapping("/{id}")
-    public SubTask updateSubTask(@PathVariable Long id, @RequestBody SubTask subTaskDetails) {
-        return subTaskService.updateSubTask(id, subTaskDetails);
+    @PutMapping("subtasks/{id}")
+    public SubTaskDto updateSubTask(@PathVariable Long id, @RequestBody SubTaskDto subTaskDetails) {
+        return SubTaskMapper.toDto(subTaskService.updateSubTask(id, SubTaskMapper.toEntity(subTaskDetails)));
     }
 
     @DeleteMapping("/{id}")
     public void deleteSubTask(@PathVariable Long id) {
         subTaskService.deleteSubTask(id);
     }
-
-    // Additional endpoints
 }
