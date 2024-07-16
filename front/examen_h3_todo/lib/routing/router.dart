@@ -4,6 +4,7 @@ import 'package:examen_h3_todo/screens/add_profile_screen.dart';
 import 'package:examen_h3_todo/screens/add_task_screen.dart';
 import 'package:examen_h3_todo/screens/edit_task_screen.dart';
 import 'package:examen_h3_todo/screens/home_screen.dart';
+import 'package:examen_h3_todo/screens/load_data_screen.dart';
 import 'package:examen_h3_todo/screens/login_screen.dart';
 import 'package:examen_h3_todo/screens/signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,13 @@ final routerP = Provider<AppRouter>((_) => AppRouter());
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
+        //loadData
+        AutoRoute(
+          initial: true,
+          path: Routes.loadData,
+          page: LoadDataRoute.page,
+        ),
+
         //sign up task
         AutoRoute(
           path: Routes.signup,
@@ -36,7 +44,7 @@ class AppRouter extends _$AppRouter {
 
         //home
         AutoRoute(
-          initial: true,
+          //initial: true,
           path: Routes.home,
           page: HomeRoute.page,
         ),
