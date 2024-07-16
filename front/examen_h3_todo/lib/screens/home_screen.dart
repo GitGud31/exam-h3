@@ -86,13 +86,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               return ListTile(
                 title: Text(project.description!),
-                onTap: () {
+                onTap: () async {
                   ref
                       .read(currentProjectP.notifier)
                       .update((state) => state = project);
                   context.maybePop();
 
                   //TODO: update view
+
+                  await ref.read(asyncProjectCrudP.notifier).getAllProjects();
                 },
               );
             },
@@ -277,11 +279,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           Expanded(
             flex: 1,
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.all(16),
-              child: const TaskBoardBuilder(),
-            ),
+            child: ref.watch(asyncProfileCrudP).when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e, st) => Center(child: Text(e.toString())),
+                  data: (_) {
+                    return ref.watch(asyncProjectCrudP).when(
+                          loading: () =>
+                              const Center(child: CircularProgressIndicator()),
+                          error: (e, st) => Center(child: Text(e.toString())),
+                          data: (_) => Container(
+                            alignment: Alignment.topCenter,
+                            padding: const EdgeInsets.all(16),
+                            child: const TaskBoardBuilder(),
+                          ),
+                        );
+                  },
+                ),
           ),
         ],
       ),
