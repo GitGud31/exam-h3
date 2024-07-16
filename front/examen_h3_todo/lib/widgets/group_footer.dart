@@ -44,6 +44,8 @@ class GroupFooter extends ConsumerWidget {
               if (newTaskName.isNotEmpty) {
                 final newTask = TaskDto(title: newTaskName);
 
+                //TODO add task to backend
+
                 ref
                     .read(boardControllerP)
                     .addGroupItem(columnData.id, TaskCardItem(newTask));

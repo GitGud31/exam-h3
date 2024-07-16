@@ -1,11 +1,9 @@
 import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
-import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
-import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
-import 'package:examen_h3_todo/dummy/data.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
@@ -32,9 +30,9 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   void initState() {
     super.initState();
 
-    // load the TASKS of the PROJECT, of the selected PROFILE.
-
     final currentProject = ref.read(currentProjectP);
+
+    L.debug("initState", currentProject);
 
     final todoTasks = <AppFlowyGroupItem>[];
     final inProgessTasks = <AppFlowyGroupItem>[];
