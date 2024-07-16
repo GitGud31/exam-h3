@@ -1,3 +1,4 @@
+import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/dummy/data.dart';
@@ -18,7 +19,7 @@ class TaskBoardBuilder extends ConsumerStatefulWidget {
 
 class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   final config = const AppFlowyBoardConfig(
-    groupBackgroundColor: Colors.white,
+    groupBackgroundColor: white,
     stretchGroupHeight: false,
   );
 

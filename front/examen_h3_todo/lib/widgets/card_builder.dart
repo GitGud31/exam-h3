@@ -1,4 +1,5 @@
 import 'package:appflowy_board/appflowy_board.dart';
+import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/widgets/rich_text_item.dart';
 import 'package:examen_h3_todo/widgets/task_card_builder.dart';
 import 'package:examen_h3_todo/widgets/text_item.dart';
@@ -6,10 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CardBuilder extends ConsumerWidget {
-  const CardBuilder({
-    super.key,
-    required this.item,
-  });
+  const CardBuilder({super.key, required this.item});
 
   final AppFlowyGroupItem item;
 
@@ -26,7 +24,7 @@ class CardBuilder extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Text(
               item.id,
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: black),
             ),
           ),
         ),
