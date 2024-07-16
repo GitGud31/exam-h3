@@ -15,8 +15,6 @@ public class ProfileMapper {
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .createdAt(entity.getCreatedAt())
-
-                //TODO
                 .projects(entity.getProjects().stream().map(ProjectMapper::toDto).collect(Collectors.toSet()))
                 .build();
     }
@@ -29,8 +27,6 @@ public class ProfileMapper {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .createdAt(dto.getCreatedAt())
-
-                //TODO
                 .projects(dto.getProjects().stream().map(ProjectMapper::toEntity).collect(Collectors.toSet()))
                 .build();
     }

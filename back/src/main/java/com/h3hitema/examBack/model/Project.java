@@ -27,11 +27,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks;
-
     private Long id;
     private String description;
     private LocalDateTime createdAt;
-
 
     public Project updateProject(Project project){
         this.description = project.getDescription();

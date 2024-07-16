@@ -15,5 +15,4 @@ public class ProjectDto {
     private String description;
     private LocalDateTime createdAt;
     private Set<TaskDto> tasks;
-
 }

@@ -26,7 +26,7 @@ public class ProjectService {
 
     public Project saveProject(Long idProfile, Project project) {
         Profile currentProfile = profileService.getProfileById(idProfile);
-//        currentProfile.getProjects().add(project);
+        // currentProfile.getProjects().add(project);
         project.setProfile(currentProfile);
         return projectRepository.save(project);
     }
