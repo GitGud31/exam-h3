@@ -6,4 +6,4 @@ final asyncProfileCrudP =
     AsyncNotifierProvider<ProfileCrudNotifier, void>(ProfileCrudNotifier.new);
 
 final currentProfileP = StateProvider<ProfileDto?>((_) => null);
-final profilesListP = StateProvider<List<ProfileDto>>((_) => []);
+final profilesListP = StateProvider<List<ProfileDto>?>((_) => null);

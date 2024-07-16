@@ -3,26 +3,32 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:examen_h3_todo/api/swagger.swagger.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
+import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileCrudNotifier extends AsyncNotifier<void> {
+class ProjectCrudNotifier extends AsyncNotifier<void> {
   @override
   FutureOr<void> build() {}
 
-  void createProfile(ProfileDto profile) async {
+  void createProject(ProjectDto project) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref.read(swaggerP).profilesPost(body: profile);
+      final currentProfile = ref.read(currentProfileP)!;
+
+      final response = await ref
+          .read(swaggerP)
+          .profilesProjectsProfileIdProfilePost(
+              idProfile: currentProfile.id, body: project);
 
       if (response.statusCode == 200) {
         ref
-            .read(currentProfileP.notifier)
+            .read(currentProjectP.notifier)
             .update((state) => state = response.bodyOrThrow);
       } else {
         state = AsyncValue.error(
-          "Code (${response.statusCode}), Create Profile: ${response.error as String}",
+          "Code (${response.statusCode}), Create Project: ${response.error as String}",
           StackTrace.current,
         );
       }
@@ -31,21 +37,22 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  void updateProfile(ProfileDto updatedProfile) async {
+  void updateProject(ProjectDto updatedProject) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
       final response = await ref
           .read(swaggerP)
-          .profilesIdPut(id: updatedProfile.id, body: updatedProfile);
+          .profilesProjectsProfileIdProjectPut(
+              idProject: updatedProject.id, body: updatedProject);
 
       if (response.statusCode == 200) {
         ref
-            .read(currentProfileP.notifier)
+            .read(currentProjectP.notifier)
             .update((state) => state = response.bodyOrThrow);
       } else {
         state = AsyncValue.error(
-          "Code (${response.statusCode}), Update Profile: ${response.error as String}",
+          "Code (${response.statusCode}), Update Project: ${response.error as String}",
           StackTrace.current,
         );
       }
@@ -54,20 +61,20 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  Future<List<ProfileDto>?> getAllProfiles() async {
+  Future<List<ProjectDto>?> getAllProjects() async {
     state = const AsyncLoading();
 
-    Response<List<ProfileDto>?>? response;
+    Response<List<ProjectDto>?>? response;
     state = await AsyncValue.guard<void>(() async {
-      response = await ref.read(swaggerP).profilesGet();
+      response = await ref.read(swaggerP).profilesProjectsGet();
 
       if (response?.statusCode == 200) {
         ref
-            .read(profilesListP.notifier)
+            .read(projectsListP.notifier)
             .update((state) => state = response?.bodyOrThrow);
       } else {
         state = AsyncValue.error(
-          "Code (${response?.statusCode}), Get all Profiles: ${response?.error as String}",
+          "Code (${response?.statusCode}), Get all Projects: ${response?.error as String}",
           StackTrace.current,
         );
       }
@@ -78,19 +85,19 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     return response?.body;
   }
 
-  void getProfile(int id) async {
+  void getProject(int id) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref.read(swaggerP).profilesIdGet(id: id);
+      final response = await ref.read(swaggerP).profilesProjectsIdGet(id: id);
 
       if (response.statusCode == 200) {
         ref
-            .read(currentProfileP.notifier)
+            .read(currentProjectP.notifier)
             .update((state) => state = response.bodyOrThrow);
       } else {
         state = AsyncValue.error(
-          "Code (${response.statusCode}), Get Profile: ${response.error as String}",
+          "Code (${response.statusCode}), Get Project: ${response.error as String}",
           StackTrace.current,
         );
       }
@@ -99,15 +106,16 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  void deleteProfile(int id) async {
+  void deleteProject(int id) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref.read(swaggerP).profilesIdDelete(id: id);
+      final response =
+          await ref.read(swaggerP).profilesProjectsIdDelete(id: id);
 
       if (response.statusCode != 200) {
         state = AsyncValue.error(
-          "Code (${response.statusCode}), Delete profile: ${response.error as String}",
+          "Code (${response.statusCode}), Delete Project: ${response.error as String}",
           StackTrace.current,
         );
       }
