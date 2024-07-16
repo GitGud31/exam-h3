@@ -279,10 +279,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16),
-                    child: const TaskBoardBuilder(),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(16),
+                      child: const TaskBoardBuilder(),
+                    ),
                   ),
                 ],
               ),
