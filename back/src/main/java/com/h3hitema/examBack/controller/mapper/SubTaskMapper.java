@@ -9,7 +9,6 @@ public class SubTaskMapper {
         return SubTaskDto.builder()
                 .description(subTask.getDescription())
                 .isChecked(subTask.isChecked())
-                .createdAt(subTask.getCreatedAt())
                 .id(subTask.getId())
                 .build();
     }
@@ -17,9 +16,7 @@ public class SubTaskMapper {
     public static SubTask toEntity(SubTaskDto dto){
         return SubTask.builder()
                 .description(dto.getDescription())
-                .createdAt(dto.getCreatedAt())
                 .isChecked(dto.isChecked())
-                .id(dto.getId())
                 .build();
     }
 }

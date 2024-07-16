@@ -1,5 +1,6 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
@@ -41,9 +42,11 @@ class GroupFooter extends ConsumerWidget {
               final newTaskName = taskController.text.trim();
 
               if (newTaskName.isNotEmpty) {
+                final newTask = TaskDto(title: newTaskName);
+
                 ref
                     .read(boardControllerP)
-                    .addGroupItem(columnData.id, TextItem(newTaskName));
+                    .addGroupItem(columnData.id, TaskCardItem(newTask));
 
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   ref

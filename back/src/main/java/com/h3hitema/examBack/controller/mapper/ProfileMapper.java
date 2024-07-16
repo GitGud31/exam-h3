@@ -11,23 +11,23 @@ public class ProfileMapper {
         return ProfileDto.builder()
                 .id(entity.getId())
                 .firstName(entity.getFirstName())
+                .version(entity.getVersion())
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .createdAt(entity.getCreatedAt())
                 .projects(entity.getProjects().stream().map(ProjectMapper::toDto).collect(Collectors.toSet()))
                 .build();
     }
 
     public static Profile toEntity(ProfileDto dto) {
-        return Profile.builder()
-                .id(dto.getId())
+        Profile profile = Profile.builder()
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
-                .createdAt(dto.getCreatedAt())
                 .projects(dto.getProjects().stream().map(ProjectMapper::toEntity).collect(Collectors.toSet()))
                 .build();
+        profile.setVersion(dto.getVersion());
+        return profile;
     }
 }

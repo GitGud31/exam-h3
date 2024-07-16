@@ -6,14 +6,22 @@ import com.h3hitema.examBack.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/profiles")
 public record ProfileController(ProfileService profileService) {
 
     @GetMapping
-    public List<ProfileDto> getAllProfiles() {
-        return profileService.getAllProfiles().stream().map(ProfileMapper::toDto).toList();
+    public List<ProfileDto> getAllProfiles(
+            @RequestParam(value = "firstName", required = false) String firstName
+    ) {
+        if (Objects.isNull(firstName)) {
+            return profileService.getAllProfiles()
+                    .stream().map(ProfileMapper::toDto).toList();
+        }
+        return profileService.getProfileByFirstName(firstName)
+                .stream().map(ProfileMapper::toDto).toList();
     }
 
     @GetMapping("/{id}")

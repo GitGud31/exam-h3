@@ -5,11 +5,11 @@ import com.h3hitema.examBack.model.Project;
 import com.h3hitema.examBack.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +27,6 @@ public class ProjectService {
     }
 
     public Project saveProject(Long idProfile, Project project) {
-        if (projectRepository.existsById(project.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Project already exists !");
-        }
         Profile currentProfile = profileService.getProfileById(idProfile);
         // currentProfile.getProjects().add(project);
         project.setProfile(currentProfile);
@@ -37,7 +34,11 @@ public class ProjectService {
     }
 
     public Project updateProject(Long id, Project projectDetails) {
-        return projectRepository.save(this.getProjectById(id).updateProject(projectDetails));
+        Project project = this.getProjectById(id);
+        if (!Objects.equals(project.getVersion(), projectDetails.getVersion())) {
+            throw new OptimisticLockingFailureException("Conflict");
+        }
+        return projectRepository.save(project.updateProject(projectDetails));
     }
 
     public void deleteProject(Long id) {

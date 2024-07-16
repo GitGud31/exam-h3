@@ -1,9 +1,10 @@
 package com.h3hitema.examBack.dto;
 
-import com.h3hitema.examBack.model.State;
+import com.h3hitema.examBack.model.enums.State;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,5 +21,6 @@ public class TaskDto {
     private LocalDateTime createdAt;
     private String deadline;
     private ProfileDto creator;
-    private Set<SubTaskDto> subTasks;
+    @Builder.Default
+    private Set<SubTaskDto> subTasks = new HashSet<>();;
 }

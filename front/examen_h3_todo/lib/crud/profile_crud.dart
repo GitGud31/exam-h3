@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileCrudNotifier extends AsyncNotifier<void> {
   @override
-  FutureOr<void> build() {}
+  FutureOr<void> build() async {}
 
   void createProfile(ProfileDto profile) async {
     state = const AsyncLoading();
