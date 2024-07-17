@@ -5,7 +5,6 @@ import 'package:examen_h3_todo/api/swagger.swagger.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectCrudNotifier extends AsyncNotifier<void> {
@@ -67,9 +66,6 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
       final token = ref.read(profileTokenP)?.token;
       response =
           await ref.read(swaggerP).profilesProjectsGet(authorization: token);
-
-      L.debug(
-          "get all projects ${response?.body?.length}", response?.statusCode);
 
       if (response?.statusCode == 200) {
         ref

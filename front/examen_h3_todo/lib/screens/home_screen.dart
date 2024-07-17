@@ -23,43 +23,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  void listProfiles(BuildContext context, List<ProfileDto> profiles) async {
-    await showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('All profiles'),
-        backgroundColor: Colors.white,
-        content: SizedBox(
-          height: 400,
-          width: 300,
-          child: ListView.builder(
-            itemCount: profiles.length,
-            itemBuilder: (_, index) {
-              final profile = profiles[index];
-
-              return ListTile(
-                title: Text("${profile.firstName!} ${profile.lastName!}"),
-                onTap: () {
-                  ref
-                      .read(currentProfileP.notifier)
-                      .update((state) => state = profile);
-
-                  //TODO:  update view
-                },
-              );
-            },
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Close'),
-            onPressed: () => context.maybePop(),
-          ),
-        ],
-      ),
-    );
-  }
-
   void listProjects(BuildContext context, List<ProjectDto> projects) async {
     await showDialog(
       context: context,
@@ -252,6 +215,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: const Text("Logout", style: TextStyle(color: white)),
             onPressed: () {
               ref.read(profileTokenP.notifier).update((state) => null);
+
+              ref.invalidate(currentProjectP);
+              ref.invalidate(currentProfileP);
+              ref.invalidate(profilesListP);
+              ref.invalidate(projectsListP);
+
               ref.read(routerP).replaceNamed(Routes.login);
             },
           ),
@@ -273,9 +242,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 72, top: 16, bottom: 16),
-            child: Text(currentProject,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text(
+              currentProject,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
           Expanded(
             flex: 1,

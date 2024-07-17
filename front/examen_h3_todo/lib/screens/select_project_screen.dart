@@ -139,36 +139,41 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
           ),
         ],
       ),
-      body: ref.watch(asyncProjectCrudP).when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, st) => Center(child: Text(e.toString())),
-            data: (_) => ListView.builder(
-              reverse: true,
-              padding: const EdgeInsets.all(32),
-              itemCount: projects!.length,
-              itemBuilder: (_, index) {
-                if (projects.isEmpty) {
-                  return const Center(
-                    child: Text("No projects found, create one!"),
-                  );
-                }
-
-                final project = projects[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(project.description!),
-                    onTap: () {
-                      ref
-                          .read(currentProjectP.notifier)
-                          .update((state) => state = project);
-
-                      ref.read(routerP).replaceNamed(Routes.home);
-                    },
-                  ),
-                );
-              },
+      body: Builder(builder: (_) {
+        // no projects
+        if (projects!.isEmpty) {
+          return const Center(
+            child: Text(
+              "No projects found, create one!",
+              style: TextStyle(color: black, fontSize: 25),
             ),
-          ),
+          );
+        }
+
+        return ref.watch(asyncProjectCrudP).when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => Center(child: Text(e.toString())),
+              data: (_) => ListView.builder(
+                padding: const EdgeInsets.all(32),
+                itemCount: projects.length,
+                itemBuilder: (_, index) {
+                  final project = projects[index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(project.description!),
+                      onTap: () {
+                        ref
+                            .read(currentProjectP.notifier)
+                            .update((state) => state = project);
+
+                        ref.read(routerP).replaceNamed(Routes.home);
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+      }),
     );
   }
 }
