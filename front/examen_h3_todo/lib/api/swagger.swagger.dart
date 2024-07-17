@@ -382,6 +382,28 @@ abstract class Swagger extends ChopperService {
   ///
   ///@param idProject
   ///@param Authorization Bearer token
+  Future<chopper.Response<List<TaskDto>>> profilesProjectsIdProjectTasksGet({
+    required int? idProject,
+    Object? authorization,
+  }) {
+    generatedMapping.putIfAbsent(TaskDto, () => TaskDto.fromJsonFactory);
+
+    return _profilesProjectsIdProjectTasksGet(
+        idProject: idProject, authorization: authorization?.toString());
+  }
+
+  ///
+  ///@param idProject
+  ///@param Authorization Bearer token
+  @Get(path: '/profiles/projects/{idProject}/tasks')
+  Future<chopper.Response<List<TaskDto>>> _profilesProjectsIdProjectTasksGet({
+    @Path('idProject') required int? idProject,
+    @Header('Authorization') String? authorization,
+  });
+
+  ///
+  ///@param idProject
+  ///@param Authorization Bearer token
   Future<chopper.Response<TaskDto>> profilesProjectsIdProjectTasksPost({
     required int? idProject,
     Object? authorization,
@@ -480,21 +502,6 @@ abstract class Swagger extends ChopperService {
 
   ///
   ///@param Authorization Bearer token
-  Future<chopper.Response<List<TaskDto>>> profilesProjectsTasksGet(
-      {Object? authorization}) {
-    generatedMapping.putIfAbsent(TaskDto, () => TaskDto.fromJsonFactory);
-
-    return _profilesProjectsTasksGet(authorization: authorization?.toString());
-  }
-
-  ///
-  ///@param Authorization Bearer token
-  @Get(path: '/profiles/projects/tasks')
-  Future<chopper.Response<List<TaskDto>>> _profilesProjectsTasksGet(
-      {@Header('Authorization') String? authorization});
-
-  ///
-  ///@param Authorization Bearer token
   Future<chopper.Response<List<SubTaskDto>>> profilesProjectsTasksSubtasksGet(
       {Object? authorization}) {
     generatedMapping.putIfAbsent(SubTaskDto, () => SubTaskDto.fromJsonFactory);
@@ -511,24 +518,18 @@ abstract class Swagger extends ChopperService {
 
   ///
   ///@param email
-  ///@param Origin
-  Future<chopper.Response<Response$>> profilesForgetPwdGet({
-    required String? email,
-    String? origin,
-  }) {
+  Future<chopper.Response<Response$>> profilesForgetPwdGet(
+      {required String? email}) {
     generatedMapping.putIfAbsent(Response$, () => Response$.fromJsonFactory);
 
-    return _profilesForgetPwdGet(email: email, origin: origin?.toString());
+    return _profilesForgetPwdGet(email: email);
   }
 
   ///
   ///@param email
-  ///@param Origin
   @Get(path: '/profiles/forget_pwd')
-  Future<chopper.Response<Response$>> _profilesForgetPwdGet({
-    @Query('email') required String? email,
-    @Header('Origin') String? origin,
-  });
+  Future<chopper.Response<Response$>> _profilesForgetPwdGet(
+      {@Query('email') required String? email});
 
   ///
   ///@param Authorization Bearer token

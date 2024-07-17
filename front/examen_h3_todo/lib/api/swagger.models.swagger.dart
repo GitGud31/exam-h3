@@ -372,12 +372,16 @@ class TaskDto {
     fromJson: taskDtoStateNullableFromJson,
   )
   final enums.TaskDtoState? state;
-  @JsonKey(name: 'priority')
-  final String? priority;
+  @JsonKey(
+    name: 'priority',
+    toJson: taskDtoPriorityNullableToJson,
+    fromJson: taskDtoPriorityNullableFromJson,
+  )
+  final enums.TaskDtoPriority? priority;
   @JsonKey(name: 'createdAt')
   final DateTime? createdAt;
   @JsonKey(name: 'deadline')
-  final String? deadline;
+  final DateTime? deadline;
   @JsonKey(name: 'creator')
   final ProfileDto? creator;
   @JsonKey(name: 'subTasks', defaultValue: <SubTaskDto>[])
@@ -437,9 +441,9 @@ extension $TaskDtoExtension on TaskDto {
       String? title,
       String? description,
       enums.TaskDtoState? state,
-      String? priority,
+      enums.TaskDtoPriority? priority,
       DateTime? createdAt,
-      String? deadline,
+      DateTime? deadline,
       ProfileDto? creator,
       List<SubTaskDto>? subTasks}) {
     return TaskDto(
@@ -459,9 +463,9 @@ extension $TaskDtoExtension on TaskDto {
       Wrapped<String?>? title,
       Wrapped<String?>? description,
       Wrapped<enums.TaskDtoState?>? state,
-      Wrapped<String?>? priority,
+      Wrapped<enums.TaskDtoPriority?>? priority,
       Wrapped<DateTime?>? createdAt,
-      Wrapped<String?>? deadline,
+      Wrapped<DateTime?>? deadline,
       Wrapped<ProfileDto?>? creator,
       Wrapped<List<SubTaskDto>?>? subTasks}) {
     return TaskDto(
@@ -646,6 +650,76 @@ List<enums.TaskDtoState>? taskDtoStateNullableListFromJson(
   }
 
   return taskDtoState.map((e) => taskDtoStateFromJson(e.toString())).toList();
+}
+
+String? taskDtoPriorityNullableToJson(enums.TaskDtoPriority? taskDtoPriority) {
+  return taskDtoPriority?.value;
+}
+
+String? taskDtoPriorityToJson(enums.TaskDtoPriority taskDtoPriority) {
+  return taskDtoPriority.value;
+}
+
+enums.TaskDtoPriority taskDtoPriorityFromJson(
+  Object? taskDtoPriority, [
+  enums.TaskDtoPriority? defaultValue,
+]) {
+  return enums.TaskDtoPriority.values
+          .firstWhereOrNull((e) => e.value == taskDtoPriority) ??
+      defaultValue ??
+      enums.TaskDtoPriority.swaggerGeneratedUnknown;
+}
+
+enums.TaskDtoPriority? taskDtoPriorityNullableFromJson(
+  Object? taskDtoPriority, [
+  enums.TaskDtoPriority? defaultValue,
+]) {
+  if (taskDtoPriority == null) {
+    return null;
+  }
+  return enums.TaskDtoPriority.values
+          .firstWhereOrNull((e) => e.value == taskDtoPriority) ??
+      defaultValue;
+}
+
+String taskDtoPriorityExplodedListToJson(
+    List<enums.TaskDtoPriority>? taskDtoPriority) {
+  return taskDtoPriority?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> taskDtoPriorityListToJson(
+    List<enums.TaskDtoPriority>? taskDtoPriority) {
+  if (taskDtoPriority == null) {
+    return [];
+  }
+
+  return taskDtoPriority.map((e) => e.value!).toList();
+}
+
+List<enums.TaskDtoPriority> taskDtoPriorityListFromJson(
+  List? taskDtoPriority, [
+  List<enums.TaskDtoPriority>? defaultValue,
+]) {
+  if (taskDtoPriority == null) {
+    return defaultValue ?? [];
+  }
+
+  return taskDtoPriority
+      .map((e) => taskDtoPriorityFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.TaskDtoPriority>? taskDtoPriorityNullableListFromJson(
+  List? taskDtoPriority, [
+  List<enums.TaskDtoPriority>? defaultValue,
+]) {
+  if (taskDtoPriority == null) {
+    return defaultValue;
+  }
+
+  return taskDtoPriority
+      .map((e) => taskDtoPriorityFromJson(e.toString()))
+      .toList();
 }
 
 // ignore: unused_element

@@ -786,6 +786,59 @@
             }
         },
         "/profiles/projects/{idProject}/tasks": {
+            "get": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "getAllTasks",
+                "parameters": [
+                    {
+                        "name": "idProject",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TaskDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "task-controller"
@@ -1004,52 +1057,6 @@
                 ]
             }
         },
-        "/profiles/projects/tasks": {
-            "get": {
-                "tags": [
-                    "task-controller"
-                ],
-                "operationId": "getAllTasks",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer token",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorInfo"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/TaskDto"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "Authorization": []
-                    }
-                ]
-            }
-        },
         "/profiles/projects/tasks/subtasks": {
             "get": {
                 "tags": [
@@ -1106,14 +1113,6 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "Origin",
-                        "in": "header",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1346,14 +1345,20 @@
                         ]
                     },
                     "priority": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "LOW",
+                            "NORMAL",
+                            "HIGH"
+                        ]
                     },
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
                     },
                     "deadline": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     "creator": {
                         "$ref": "#/components/schemas/ProfileDto"

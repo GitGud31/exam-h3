@@ -4,8 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
 import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
+import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
+import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:flutter/material.dart';
@@ -71,33 +73,35 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
                       color: lightGreen,
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
+                          final now = DateTime.now();
+                          final currentProfile = ref.read(currentProfileP);
                           final newProjectDto = ProjectDto(
                             description: descriptionController.text,
                             tasks: [
                               TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "todo deadline",
+                                  createdAt: now,
+                                  creator: currentProfile,
+                                  deadline: now,
                                   description: "todo description",
-                                  priority: "todo priority",
+                                  priority: TaskDtoPriority.low,
                                   state: TaskDtoState.todo,
                                   subTasks: [],
                                   title: "new todo task"),
                               TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "inProgress deadline",
+                                  createdAt: now,
+                                  creator: currentProfile,
+                                  deadline: now,
                                   description: "inProgress description",
-                                  priority: "inProgress priority",
+                                  priority: TaskDtoPriority.low,
                                   state: TaskDtoState.inProgress,
                                   subTasks: [],
                                   title: "new inProgress task"),
                               TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "done deadline",
+                                  createdAt: now,
+                                  creator: currentProfile,
+                                  deadline: now,
                                   description: "done description",
-                                  priority: "done priority",
+                                  priority: TaskDtoPriority.low,
                                   state: TaskDtoState.done,
                                   subTasks: [],
                                   title: "new done task"),
@@ -161,10 +165,14 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
                   return Card(
                     child: ListTile(
                       title: Text(project.description!),
-                      onTap: () {
+                      onTap: () async {
                         ref
                             .read(currentProjectP.notifier)
                             .update((state) => state = project);
+
+                        await ref.read(asyncTaskCrudP.notifier).getAllTasks();
+
+                        ref.read(boardControllerP).clear();
 
                         ref.read(routerP).replaceNamed(Routes.home);
                       },

@@ -3,7 +3,6 @@ import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
@@ -30,14 +29,15 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   void initState() {
     super.initState();
 
-    final tasks = ref.read(tasksListP);
+    WidgetsBinding.instance.addPostFrameCallback((_) => setupTasks());
+  }
 
-    L.debug("initState", tasks);
-
+  void setupTasks() {
     final todoTasks = <AppFlowyGroupItem>[];
     final inProgessTasks = <AppFlowyGroupItem>[];
     final doneTasks = <AppFlowyGroupItem>[];
 
+    final tasks = ref.read(tasksListP);
     for (final task in tasks!) {
       if (task.state == TaskDtoState.todo) {
         todoTasks.add(TaskCardItem(task));
@@ -49,10 +49,6 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
         doneTasks.add(TaskCardItem(task));
       }
     }
-
-    L.debug("todosTasks", todoTasks);
-    L.debug("inProgessTasks", inProgessTasks);
-    L.debug("doneTasks", doneTasks);
 
     ref.read(boardControllerP).addGroup(AppFlowyGroupData(
           id: "To Do",
@@ -69,14 +65,12 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
           name: "Done",
           items: doneTasks,
         ));
-
-    L.debug("groupDatas", ref.read(boardControllerP).groupDatas);
   }
 
   @override
   Widget build(BuildContext context) {
     return AppFlowyBoard(
-      controller: ref.read(boardControllerP),
+      controller: ref.watch(boardControllerP),
       boardScrollController: ref.read(boardScrollControllerP),
       config: config,
       groupConstraints: BoxConstraints.tightFor(

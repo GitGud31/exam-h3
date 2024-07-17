@@ -297,6 +297,24 @@ final class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<List<TaskDto>>> _profilesProjectsIdProjectTasksGet({
+    required int? idProject,
+    String? authorization,
+  }) {
+    final Uri $url = Uri.parse('/profiles/projects/${idProject}/tasks');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<List<TaskDto>, TaskDto>($request);
+  }
+
+  @override
   Future<Response<TaskDto>> _profilesProjectsIdProjectTasksPost({
     required int? idProject,
     String? authorization,
@@ -375,22 +393,6 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<TaskDto>>> _profilesProjectsTasksGet(
-      {String? authorization}) {
-    final Uri $url = Uri.parse('/profiles/projects/tasks');
-    final Map<String, String> $headers = {
-      if (authorization != null) 'Authorization': authorization,
-    };
-    final Request $request = Request(
-      'GET',
-      $url,
-      client.baseUrl,
-      headers: $headers,
-    );
-    return client.send<List<TaskDto>, TaskDto>($request);
-  }
-
-  @override
   Future<Response<List<SubTaskDto>>> _profilesProjectsTasksSubtasksGet(
       {String? authorization}) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks');
@@ -407,21 +409,14 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<Response$>> _profilesForgetPwdGet({
-    required String? email,
-    String? origin,
-  }) {
+  Future<Response<Response$>> _profilesForgetPwdGet({required String? email}) {
     final Uri $url = Uri.parse('/profiles/forget_pwd');
     final Map<String, dynamic> $params = <String, dynamic>{'email': email};
-    final Map<String, String> $headers = {
-      if (origin != null) 'Origin': origin,
-    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
       parameters: $params,
-      headers: $headers,
     );
     return client.send<Response$, Response$>($request);
   }

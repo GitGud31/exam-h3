@@ -86,11 +86,13 @@ TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
       title: json['title'] as String?,
       description: json['description'] as String?,
       state: taskDtoStateNullableFromJson(json['state']),
-      priority: json['priority'] as String?,
+      priority: taskDtoPriorityNullableFromJson(json['priority']),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-      deadline: json['deadline'] as String?,
+      deadline: json['deadline'] == null
+          ? null
+          : DateTime.parse(json['deadline'] as String),
       creator: json['creator'] == null
           ? null
           : ProfileDto.fromJson(json['creator'] as Map<String, dynamic>),
@@ -105,9 +107,9 @@ Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'state': taskDtoStateNullableToJson(instance.state),
-      'priority': instance.priority,
+      'priority': taskDtoPriorityNullableToJson(instance.priority),
       'createdAt': instance.createdAt?.toIso8601String(),
-      'deadline': instance.deadline,
+      'deadline': instance.deadline?.toIso8601String(),
       'creator': instance.creator?.toJson(),
       'subTasks': instance.subTasks?.map((e) => e.toJson()).toList(),
     };

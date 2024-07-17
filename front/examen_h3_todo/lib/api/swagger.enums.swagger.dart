@@ -15,3 +15,19 @@ enum TaskDtoState {
 
   const TaskDtoState(this.value);
 }
+
+enum TaskDtoPriority {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('LOW')
+  low('LOW'),
+  @JsonValue('NORMAL')
+  normal('NORMAL'),
+  @JsonValue('HIGH')
+  high('HIGH');
+
+  final String? value;
+
+  const TaskDtoPriority(this.value);
+}

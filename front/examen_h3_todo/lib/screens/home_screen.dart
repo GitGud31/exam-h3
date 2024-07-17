@@ -1,8 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:auto_route/auto_route.dart';
-import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
-import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
@@ -13,7 +11,6 @@ import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:examen_h3_todo/widgets/task_board_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerStatefulWidget {
@@ -24,169 +21,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  void listProjects(BuildContext context, List<ProjectDto> projects) async {
-    await showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('All projects'),
-            SizedBox(
-              width: 100,
-              child: IconButton.filled(
-                icon: const Icon(Icons.add, color: Colors.white),
-                onPressed: () => _addProjectBottomsheet(context),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.white,
-        content: SizedBox(
-          height: 400,
-          width: 300,
-          child: ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (_, index) {
-              final project = projects[index];
-
-              return ListTile(
-                title: Text(project.description!),
-                onTap: () async {
-                  ref
-                      .read(currentProjectP.notifier)
-                      .update((state) => state = project);
-
-                  await ref.read(asyncProjectCrudP.notifier).getAllProjects();
-                  await ref.read(asyncTaskCrudP.notifier).getAllTasks();
-
-                  context.maybePop();
-                },
-              );
-            },
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Close'),
-            onPressed: () => context.maybePop(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _addProjectBottomsheet(BuildContext context) async {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController descriptionController = TextEditingController();
-
-    await showModalBottomSheet<void>(
-      context: context,
-      useSafeArea: true,
-      builder: (bottomsheetContext) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    'Add new project',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const Gap(20),
-
-                  // project description
-                  TextFormField(
-                    controller: descriptionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Project Description',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Description cannot be empty';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  const Gap(20),
-
-                  // add project button
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: MaterialButton(
-                      color: lightGreen,
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          final newProjectDto = ProjectDto(
-                            description: descriptionController.text,
-                            tasks: [
-                              TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "todo deadline",
-                                  description: "todo description",
-                                  priority: "todo priority",
-                                  state: TaskDtoState.todo,
-                                  subTasks: [],
-                                  title: "new todo task"),
-                              TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "inProgress deadline",
-                                  description: "inProgress description",
-                                  priority: "inProgress priority",
-                                  state: TaskDtoState.inProgress,
-                                  subTasks: [],
-                                  title: "new inProgress task"),
-                              TaskDto(
-                                  createdAt: DateTime.now(),
-                                  creator: ref.read(currentProfileP),
-                                  deadline: "done deadline",
-                                  description: "done description",
-                                  priority: "done priority",
-                                  state: TaskDtoState.done,
-                                  subTasks: [],
-                                  title: "new done task"),
-                            ],
-                          );
-
-                          ref
-                              .read(asyncProjectCrudP.notifier)
-                              .createProject(newProjectDto);
-
-                          ref.invalidate(currentProjectP);
-
-                          bottomsheetContext.maybePop();
-                        }
-                      },
-                      child: const Text(
-                        'Add Project',
-                        style: TextStyle(color: white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-    context.maybePop();
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentProfile = ref.watch(currentProfileP);
@@ -221,8 +55,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               ref.invalidate(currentProjectP);
               ref.invalidate(currentProfileP);
+              ref.invalidate(currentTaskP);
+
               ref.invalidate(profilesListP);
               ref.invalidate(projectsListP);
+              ref.invalidate(tasksListP);
+
+              ref.invalidate(asyncProfileCrudP);
+              ref.invalidate(asyncProjectCrudP);
+              ref.invalidate(asyncTaskCrudP);
 
               ref.read(routerP).replaceNamed(Routes.login);
             },
@@ -235,7 +76,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               (projects == null)
                   ? Bar.error(ref, context, "Error getting projects")
-                  : listProjects(context, projects);
+                  //: listProjects(context, projects);
+                  : ref.read(routerP).navigateNamed(Routes.selectProject);
             },
           )
         ],
@@ -243,6 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //project title
           Padding(
             padding: const EdgeInsets.only(left: 72, top: 16, bottom: 16),
             child: Text(
@@ -250,18 +93,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
+
+          // tasks
           Expanded(
             flex: 1,
-            child: ref.watch(asyncProjectCrudP).when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (e, st) => Center(child: Text(e.toString())),
-                  data: (_) => Container(
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.all(16),
-                    child: const TaskBoardBuilder(),
-                  ),
-                ),
+            child: Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.all(16),
+              child: const TaskBoardBuilder(),
+            ),
           ),
         ],
       ),
