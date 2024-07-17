@@ -31,7 +31,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             throws AuthenticationException, IOException {
         UserCredentials userCredentials = new ObjectMapper()
                 .readValue(req.getInputStream(), UserCredentials.class);
-        String decryptedPassword = decryptPassword(userCredentials.getPassword());
+        String decryptedPassword = userCredentials.getPassword();
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userCredentials.getEmail(),

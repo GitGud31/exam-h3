@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -47,8 +48,9 @@ public class ApplicationSecurity {
                                 .requestMatchers(req -> req.getRequestURI().contains("swagger-ui")).permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/v2/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/profiles").permitAll()
                                 .requestMatchers("/login").permitAll()
-                                .anyRequest().permitAll())
+                                .anyRequest().authenticated())
                 .addFilterBefore(new LoginFilter("/login", config.getAuthenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new AuthenticationFilter(),

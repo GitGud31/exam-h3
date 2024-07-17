@@ -6,6 +6,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -25,13 +26,13 @@ public class Profile extends AbstractEntity {
     @OneToMany(mappedBy = "profile")
     private Set<Project> projects;
 
-    public Profile updateProfile(Profile profile, String encryptedPwd){
+    private String codeForgetPwd;
+    private LocalDateTime codeExpirationForgetPwd;
+
+    public Profile updateProfile(Profile profile){
         this.setEmail(profile.getEmail());
         this.setFirstName(profile.getFirstName());
         this.setLastName(profile.getLastName());
-        this.setPassword(encryptedPwd);
-        this.setCreatedAt(profile.getCreatedAt());
-        this.setVersion(profile.getVersion());
         return this;
     }
 }

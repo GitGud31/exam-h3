@@ -1,5 +1,6 @@
 package com.h3hitema.examBack.dto;
 
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Builder
 public class ProfileDto {
     private Long id;
+    @Email(message = "Email not correct")
     private String email;
     private String firstName;
     private String lastName;
