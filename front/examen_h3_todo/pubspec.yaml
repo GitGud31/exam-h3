@@ -23,6 +23,7 @@ dependencies:
   build_runner: ^2.4.6
   chopper: ^7.0.6
   json_annotation: ^4.8.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

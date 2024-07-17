@@ -5,8 +5,6 @@ import com.h3hitema.examBack.dto.ProfileDto;
 import com.h3hitema.examBack.dto.ProfileForgetPwdDto;
 import com.h3hitema.examBack.dto.Response;
 import com.h3hitema.examBack.service.ProfileService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,8 +48,8 @@ public record ProfileController(ProfileService profileService) {
     }
 
     @GetMapping("/forget_pwd")
-    public Response forgetPwd(@RequestParam("email") String email, HttpServletRequest request) {
-        String origin = request.getHeader(HttpHeaders.ORIGIN);
+    public Response forgetPwd(@RequestParam("email") String email,
+                              @RequestHeader(value="Origin") String origin) {
         profileService.forgetPwd(email, origin);
         return new Response("OK");
     }

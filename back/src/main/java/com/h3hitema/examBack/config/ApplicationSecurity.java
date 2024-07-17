@@ -50,6 +50,8 @@ public class ApplicationSecurity {
                                 .requestMatchers("/v2/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/profiles").permitAll()
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers(req -> req.getRequestURI().contains("forget_pwd")).permitAll()
+                                .requestMatchers(req -> req.getRequestURI().contains("reset_pwd")).permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(new LoginFilter("/login", config.getAuthenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
