@@ -18,17 +18,16 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProfileService profileService;
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public List<Project> getAllProjectsForUser(String email) {
+        return projectRepository.findAllByProfile_Email(email);
     }
 
     public Project getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow();
     }
 
-    public Project saveProject(Long idProfile, Project project) {
-        Profile currentProfile = profileService.getProfileById(idProfile);
-        // currentProfile.getProjects().add(project);
+    public Project createProject(String currentUserLogin, Project project) {
+        Profile currentProfile = profileService.getProfileByEmail(currentUserLogin);
         project.setProfile(currentProfile);
         return projectRepository.save(project);
     }
@@ -42,7 +41,9 @@ public class ProjectService {
     }
 
     public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+        Project project = getProjectById(id);
+        project.setProfile(null);
+        projectRepository.delete(project);
     }
 }
 

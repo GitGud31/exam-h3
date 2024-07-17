@@ -21,6 +21,7 @@ public class Project extends AbstractEntity {
             name = "project_profile",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id")
+
     )
     private Profile profile;
 

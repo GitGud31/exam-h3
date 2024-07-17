@@ -8,6 +8,9 @@ public class TaskMapper {
     public static TaskDto toDto(Task task){
         return TaskDto.builder()
                 .description(task.getDescription())
+                .title(task.getTitle())
+                .state(task.getState())
+                .deadline(task.getDeadline())
                 .id(task.getId())
                 .build();
     }
@@ -15,6 +18,9 @@ public class TaskMapper {
     public static Task toEntity(TaskDto dto){
         return Task.builder()
                 .description(dto.getDescription())
+                .title(dto.getTitle())
+                .state(dto.getState())
+                .deadline(dto.getDeadline())
                 .build();
     }
 }

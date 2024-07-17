@@ -1,6 +1,7 @@
 package com.h3hitema.examBack.service;
 
 import com.h3hitema.examBack.model.Profile;
+import com.h3hitema.examBack.model.Project;
 import com.h3hitema.examBack.model.Task;
 import com.h3hitema.examBack.repository.TaskRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,8 +29,14 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow();
     }
 
-    public Task createTask(Long idProject, Task task) {
-        projectService.getProjectById(idProject);
+    public Task createTask(Long idProject, Task task, String creatorEmail) {
+        task.setCreator( profileService.getProfileByEmail(creatorEmail));
+        Project project = projectService.getProjectById(idProject);
+        if(Objects.isNull(project.getTasks())){
+            project.setTasks(new HashSet<>());
+        }
+        project.getTasks().add(task);
+        task.setProject(project);
         return taskRepository.save(task);
     }
 
