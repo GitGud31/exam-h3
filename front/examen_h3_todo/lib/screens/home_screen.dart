@@ -6,6 +6,8 @@ import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
+import 'package:examen_h3_todo/routing/router.dart';
+import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:examen_h3_todo/widgets/task_board_builder.dart';
 import 'package:flutter/material.dart';
@@ -247,14 +249,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         centerTitle: true,
         actions: [
           MaterialButton(
-            child: const Text("Profiles", style: TextStyle(color: white)),
-            onPressed: () async {
-              final profiles =
-                  await ref.read(asyncProfileCrudP.notifier).getAllProfiles();
-
-              (profiles == null)
-                  ? Bar.error(ref, context, "Error getting profiles")
-                  : listProfiles(context, profiles);
+            child: const Text("Logout", style: TextStyle(color: white)),
+            onPressed: () {
+              ref.read(profileTokenP.notifier).update((state) => null);
+              ref.read(routerP).replaceNamed(Routes.login);
             },
           ),
           MaterialButton(
