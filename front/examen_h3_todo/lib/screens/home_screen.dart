@@ -195,7 +195,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                           ref
                               .read(asyncProjectCrudP.notifier)
-                              .createProject(currentProfile.id!, newProjectDto);
+                              .createProject(newProjectDto);
 
                           bottomsheetContext.maybePop();
                         }

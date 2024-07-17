@@ -296,14 +296,21 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<Response$>> _profilesForgetPwdGet({required String? email}) {
+  Future<Response<Response$>> _profilesForgetPwdGet({
+    required String? email,
+    String? origin,
+  }) {
     final Uri $url = Uri.parse('/profiles/forget_pwd');
     final Map<String, dynamic> $params = <String, dynamic>{'email': email};
+    final Map<String, String> $headers = {
+      if (origin != null) 'Origin': origin,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
       parameters: $params,
+      headers: $headers,
     );
     return client.send<Response$, Response$>($request);
   }

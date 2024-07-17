@@ -396,18 +396,24 @@ abstract class Swagger extends ChopperService {
 
   ///
   ///@param email
-  Future<chopper.Response<Response$>> profilesForgetPwdGet(
-      {required String? email}) {
+  ///@param Origin
+  Future<chopper.Response<Response$>> profilesForgetPwdGet({
+    required String? email,
+    String? origin,
+  }) {
     generatedMapping.putIfAbsent(Response$, () => Response$.fromJsonFactory);
 
-    return _profilesForgetPwdGet(email: email);
+    return _profilesForgetPwdGet(email: email, origin: origin?.toString());
   }
 
   ///
   ///@param email
+  ///@param Origin
   @Get(path: '/profiles/forget_pwd')
-  Future<chopper.Response<Response$>> _profilesForgetPwdGet(
-      {@Query('email') required String? email});
+  Future<chopper.Response<Response$>> _profilesForgetPwdGet({
+    @Query('email') required String? email,
+    @Header('Origin') String? origin,
+  });
 }
 
 typedef $JsonFactory<T> = T Function(Map<String, dynamic> json);
