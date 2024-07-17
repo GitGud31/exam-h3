@@ -19,13 +19,14 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         //loadData
         AutoRoute(
-          initial: true,
+          //initial: true,
           path: Routes.loadData,
           page: LoadDataRoute.page,
         ),
 
         //sign up task
         AutoRoute(
+          initial: true,
           path: Routes.signup,
           page: SignupRoute.page,
         ),

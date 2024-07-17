@@ -2,27 +2,69 @@ import 'dart:async';
 
 import 'package:chopper/chopper.dart';
 import 'package:examen_h3_todo/api/swagger.swagger.dart';
+import 'package:examen_h3_todo/consts/urls.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileCrudNotifier extends AsyncNotifier<void> {
   @override
   FutureOr<void> build() async {}
 
-  void createProfile(ProfileDto profile) async {
+  Future<bool> createProfile(ProfileDto profile) async {
     state = const AsyncLoading();
+      L.debug("create profile", profile);
 
+    bool result = false;
     state = await AsyncValue.guard<void>(() async {
       final response = await ref.read(swaggerP).profilesPost(body: profile);
+
+      L.debug("create profile", response);
+
 
       if (response.statusCode == 200) {
         ref
             .read(currentProfileP.notifier)
             .update((state) => state = response.bodyOrThrow);
+
+        result = true;
+        return;
       } else {
         state = AsyncValue.error(
           "Code (${response.statusCode}), Create Profile: ${response.error as String}",
+          StackTrace.current,
+        );
+
+        result = false;
+      }
+    });
+
+    return result;
+  }
+
+  //TODO; finish implmentation
+  void loginProfile(String email, String password) async {
+    state = const AsyncLoading();
+
+    state = await AsyncValue.guard<void>(() async {
+      final response = await ref
+          .read(swaggerP)
+          .client
+          .post(Uri.parse("${Url.baseUrl}/login"), body: {
+        "email": "test@test.com",
+        "password": "test",
+      });
+
+      if (response.statusCode == 200) {
+        /*  ref
+            .read(currentProfileP.notifier)
+            .update((state) => state = response.bodyOrThrow); */
+
+        L.debug("login profile", response);
+      } else {
+        state = AsyncValue.error(
+          "Code (${response.statusCode}), Login Profile: ${response.error as String}",
           StackTrace.current,
         );
       }
