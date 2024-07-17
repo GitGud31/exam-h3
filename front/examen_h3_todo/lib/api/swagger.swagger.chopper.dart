@@ -18,12 +18,19 @@ final class _$Swagger extends Swagger {
   final Type definitionType = Swagger;
 
   @override
-  Future<Response<ProfileDto>> _profilesIdGet({required int? id}) {
+  Future<Response<ProfileDto>> _profilesIdGet({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<ProfileDto, ProfileDto>($request);
   }
@@ -31,26 +38,38 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<ProfileDto>> _profilesIdPut({
     required int? id,
+    String? authorization,
     required ProfileDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'PUT',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<ProfileDto, ProfileDto>($request);
   }
 
   @override
-  Future<Response<dynamic>> _profilesIdDelete({required int? id}) {
+  Future<Response<dynamic>> _profilesIdDelete({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'DELETE',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -58,26 +77,38 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<ProjectDto>> _profilesProjectsIdProjectPut({
     required int? idProject,
+    String? authorization,
     required ProjectDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/${idProject}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'PUT',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<ProjectDto, ProjectDto>($request);
   }
 
   @override
-  Future<Response<TaskDto>> _profilesProjectsTasksIdGet({required int? id}) {
+  Future<Response<TaskDto>> _profilesProjectsTasksIdGet({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<TaskDto, TaskDto>($request);
   }
@@ -85,26 +116,38 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<TaskDto>> _profilesProjectsTasksIdPut({
     required int? id,
+    String? authorization,
     required TaskDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'PUT',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<TaskDto, TaskDto>($request);
   }
 
   @override
-  Future<Response<dynamic>> _profilesProjectsTasksIdDelete({required int? id}) {
+  Future<Response<dynamic>> _profilesProjectsTasksIdDelete({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'DELETE',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -113,25 +156,36 @@ final class _$Swagger extends Swagger {
   Future<Response<TaskDto>> _profilesProjectsTasksIdProfileGuestIdProfilePut({
     required int? id,
     required int? idProfile,
+    String? authorization,
   }) {
     final Uri $url =
         Uri.parse('/profiles/projects/tasks/${id}/profile_guest/${idProfile}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'PUT',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<TaskDto, TaskDto>($request);
   }
 
   @override
-  Future<Response<SubTaskDto>> _profilesProjectsTasksSubtasksIdGet(
-      {required int? id}) {
+  Future<Response<SubTaskDto>> _profilesProjectsTasksSubtasksIdGet({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<SubTaskDto, SubTaskDto>($request);
   }
@@ -139,30 +193,42 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<SubTaskDto>> _profilesProjectsTasksSubtasksIdPut({
     required int? id,
+    String? authorization,
     required SubTaskDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'PUT',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<SubTaskDto, SubTaskDto>($request);
   }
 
   @override
-  Future<Response<List<ProfileDto>>> _profilesGet({String? firstName}) {
+  Future<Response<List<ProfileDto>>> _profilesGet({
+    String? firstName,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles');
     final Map<String, dynamic> $params = <String, dynamic>{
       'firstName': firstName
+    };
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
     };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
       parameters: $params,
+      headers: $headers,
     );
     return client.send<List<ProfileDto>, ProfileDto>($request);
   }
@@ -195,26 +261,37 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<ProjectDto>>> _profilesProjectsGet() {
+  Future<Response<List<ProjectDto>>> _profilesProjectsGet(
+      {String? authorization}) {
     final Uri $url = Uri.parse('/profiles/projects');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<List<ProjectDto>, ProjectDto>($request);
   }
 
   @override
-  Future<Response<ProjectDto>> _profilesProjectsPost(
-      {required ProjectDto? body}) {
+  Future<Response<ProjectDto>> _profilesProjectsPost({
+    String? authorization,
+    required ProjectDto? body,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'POST',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<ProjectDto, ProjectDto>($request);
   }
@@ -222,15 +299,20 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<TaskDto>> _profilesProjectsIdProjectTasksPost({
     required int? idProject,
+    String? authorization,
     required TaskDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/${idProject}/tasks');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'POST',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<TaskDto, TaskDto>($request);
   }
@@ -238,59 +320,88 @@ final class _$Swagger extends Swagger {
   @override
   Future<Response<SubTaskDto>> _profilesProjectsTasksIdTaskSubtasksPost({
     required int? idTask,
+    String? authorization,
     required SubTaskDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/${idTask}/subtasks');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final $body = body;
     final Request $request = Request(
       'POST',
       $url,
       client.baseUrl,
       body: $body,
+      headers: $headers,
     );
     return client.send<SubTaskDto, SubTaskDto>($request);
   }
 
   @override
-  Future<Response<ProjectDto>> _profilesProjectsIdGet({required int? id}) {
+  Future<Response<ProjectDto>> _profilesProjectsIdGet({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<ProjectDto, ProjectDto>($request);
   }
 
   @override
-  Future<Response<dynamic>> _profilesProjectsIdDelete({required int? id}) {
+  Future<Response<dynamic>> _profilesProjectsIdDelete({
+    required int? id,
+    String? authorization,
+  }) {
     final Uri $url = Uri.parse('/profiles/projects/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'DELETE',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
-  Future<Response<List<TaskDto>>> _profilesProjectsTasksGet() {
+  Future<Response<List<TaskDto>>> _profilesProjectsTasksGet(
+      {String? authorization}) {
     final Uri $url = Uri.parse('/profiles/projects/tasks');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<List<TaskDto>, TaskDto>($request);
   }
 
   @override
-  Future<Response<List<SubTaskDto>>> _profilesProjectsTasksSubtasksGet() {
+  Future<Response<List<SubTaskDto>>> _profilesProjectsTasksSubtasksGet(
+      {String? authorization}) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      headers: $headers,
     );
     return client.send<List<SubTaskDto>, SubTaskDto>($request);
   }
@@ -313,5 +424,20 @@ final class _$Swagger extends Swagger {
       headers: $headers,
     );
     return client.send<Response$, Response$>($request);
+  }
+
+  @override
+  Future<Response<ProfileDto>> _profilesCurrentGet({String? authorization}) {
+    final Uri $url = Uri.parse('/profiles/current');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<ProfileDto, ProfileDto>($request);
   }
 }

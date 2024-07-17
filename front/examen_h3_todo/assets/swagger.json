@@ -26,6 +26,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -70,6 +76,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -124,6 +136,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -163,6 +181,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -219,6 +243,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -263,6 +293,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -317,6 +353,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -365,6 +407,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -411,6 +459,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -455,6 +509,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -510,6 +570,12 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -628,6 +694,14 @@
                     "project-controller"
                 ],
                 "operationId": "getAllProjectsForUser",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "500": {
                         "description": "Internal Server Error",
@@ -664,6 +738,14 @@
                     "project-controller"
                 ],
                 "operationId": "createProject",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -718,6 +800,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -774,6 +862,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "requestBody": {
@@ -830,6 +924,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -874,6 +974,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -904,6 +1010,14 @@
                     "task-controller"
                 ],
                 "operationId": "getAllTasks",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "500": {
                         "description": "Internal Server Error",
@@ -942,6 +1056,14 @@
                     "sub-task-controller"
                 ],
                 "operationId": "getAllSubTasks",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "500": {
                         "description": "Internal Server Error",
@@ -1022,6 +1144,49 @@
                 }
             }
         },
+        "/profiles/current": {
+            "get": {
+                "tags": [
+                    "profile-controller"
+                ],
+                "operationId": "getProfileByEmail",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        },
         "/profiles/projects/tasks{id}": {
             "delete": {
                 "tags": [
@@ -1037,6 +1202,12 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
                     }
                 ],
                 "responses": {

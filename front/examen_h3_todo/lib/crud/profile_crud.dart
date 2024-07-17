@@ -8,6 +8,7 @@ import 'package:examen_h3_todo/consts/urls.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:examen_h3_todo/logger.dart';
+import 'package:examen_h3_todo/models/user_token.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,15 +57,23 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
         "password": password,
       });
 
-      L.debug("login profile", response);
-
       if (response.statusCode == 200) {
-        /*  ref
-            .read(currentProfileP.notifier)
-            .update((state) => state = response.bodyOrThrow); */
+        //save token
+        ref
+            .read(profileTokenP.notifier)
+            .update((state) => state = UserToken.fromMap(response.bodyOrThrow));
 
-        //TODO save token
-        //TODO select currentProfile
+        //get profile by email
+        final profileDtoResponse = await ref
+            .read(swaggerP)
+            .profilesCurrentGet(authorization: ref.read(profileTokenP)!.token);
+
+        L.debug("get profile by email profile", profileDtoResponse);
+
+        //select currentProfile
+        ref
+            .read(currentProfileP.notifier)
+            .update((state) => state = profileDtoResponse.bodyOrThrow);
 
         result = true;
         return;
