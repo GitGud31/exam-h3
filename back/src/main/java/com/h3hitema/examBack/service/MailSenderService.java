@@ -41,13 +41,6 @@ public class MailSenderService {
         }
         Map<String, String> replacements = new HashMap<>();
         replacements.put("code", data.getModel().get("code").toString());
-        if (data.getModel().get("origin") != null) {
-            String link = data.getModel().get("origin").toString() + url + MailTemplate.encrypt(data.getTo());
-            replacements.put("link", link);
-        } else {
-            replacements.put("link", "Une erreur c'est produite");
-        }
-
         formatDate(replacements, data);
         String message = template.getTemplate(replacements);
 

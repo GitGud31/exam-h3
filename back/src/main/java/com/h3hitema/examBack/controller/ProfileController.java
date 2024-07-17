@@ -68,9 +68,8 @@ public record ProfileController(ProfileService profileService) {
     }
 
     @GetMapping("/forget_pwd")
-    public Response forgetPwd(@RequestParam("email") String email,
-                              @RequestHeader(value="Origin") String origin) {
-        profileService.forgetPwd(email, origin);
+    public Response forgetPwd(@RequestParam("email") String email) {
+        profileService.forgetPwd(email);
         return new Response("OK");
     }
 

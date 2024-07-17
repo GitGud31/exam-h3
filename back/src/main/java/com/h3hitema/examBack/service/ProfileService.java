@@ -64,7 +64,7 @@ public class ProfileService {
         profileRepository.deleteById(id);
     }
 
-    public void forgetPwd(String email,  String origin){
+    public void forgetPwd(String email){
         Profile profile = this.getProfileByEmail(email);
         LocalDateTime expiration = LocalDateTime.now().plusHours(1);
         String forgetCode = Utils.getRondomNumber(999999);
@@ -73,7 +73,7 @@ public class ProfileService {
         profileRepository.save(profile);
         SendMailStatus sendMailStatus = mailSenderService
                 .sendMailForgetPwd(applicationProperties.getMailFrom(),
-                        MailDataDto.builder().to(email).model(buildMailData(expiration, forgetCode, origin)).build());
+                        MailDataDto.builder().to(email).model(buildMailData(expiration, forgetCode)).build());
         if(sendMailStatus.equals(SendMailStatus.Failed)){
             throw new IllegalArgumentException("Erreur d'envoi de mail");
         }
@@ -89,11 +89,10 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    private Map<String, Object> buildMailData(LocalDateTime expiration, String forgetCode, String origin){
+    private Map<String, Object> buildMailData(LocalDateTime expiration, String forgetCode){
         Map<String, Object> model = new HashMap<>();
         model.put("expirationDate", expiration);
         model.put("code", forgetCode);
-        model.put("origin", origin);
         return model;
     }
 }
