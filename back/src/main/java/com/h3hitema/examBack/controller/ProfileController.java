@@ -34,6 +34,11 @@ public record ProfileController(ProfileService profileService) {
         return ProfileMapper.toDto(profileService.getProfileById(id));
     }
 
+    @GetMapping("/byemail")
+    public ProfileDto getProfileByEmail(@RequestParam(value = "email") String email) {
+        return ProfileMapper.toDto(profileService.getProfileByEmail(email));
+    }
+
     @PostMapping
     public ProfileDto createProfile(@RequestBody @Validated ProfileDto profileDto) {
         return ProfileMapper.toDto(profileService.createProfile(ProfileMapper.toEntity(profileDto)));
