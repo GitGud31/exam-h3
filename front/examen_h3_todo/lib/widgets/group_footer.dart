@@ -3,8 +3,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
+import 'package:examen_h3_todo/controllers/project_controller.dart';
+import 'package:examen_h3_todo/controllers/task_controller.dart';
+import 'package:examen_h3_todo/extensions/exntesion_on_void.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
-import 'package:examen_h3_todo/widgets/text_item.dart';
+import 'package:examen_h3_todo/widgets/task_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,10 +22,10 @@ class GroupFooter extends ConsumerWidget {
   final AppFlowyGroupData<dynamic> columnData;
 
   void addTask(BuildContext context, WidgetRef ref,
-      AppFlowyGroupData<dynamic> columnData) {
+      AppFlowyGroupData<dynamic> columnData) async {
     final TextEditingController taskController = TextEditingController();
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Add New Task'),
@@ -32,19 +35,31 @@ class GroupFooter extends ConsumerWidget {
           decoration: const InputDecoration(hintText: 'Enter task name'),
         ),
         actions: <Widget>[
+          // cancel button
           TextButton(
             child: const Text('Cancel'),
             onPressed: () => context.maybePop(),
           ),
+
+          // add button
           TextButton(
             child: const Text('Add'),
             onPressed: () {
               final newTaskName = taskController.text.trim();
 
               if (newTaskName.isNotEmpty) {
-                final newTask = TaskDto(title: newTaskName);
+                final newTask = TaskDto(
+                  title: newTaskName,
+                  state: taskDtoState(columnData.id),
+                  subTasks: [],
+                  createdAt: DateTime.now(),
+                  description: "",
+                );
 
-                //TODO add task to backend
+                ref.read(asyncTaskCrudP.notifier).createTask(
+                      ref.read(currentProjectP)!.id!,
+                      newTask,
+                    );
 
                 ref
                     .read(boardControllerP)

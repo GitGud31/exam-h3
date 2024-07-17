@@ -2,12 +2,12 @@ import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
-import 'package:examen_h3_todo/controllers/project_controller.dart';
+import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
-import 'package:examen_h3_todo/widgets/text_item.dart';
+import 'package:examen_h3_todo/widgets/task_card_item.dart';
 
 import 'package:flutter/material.dart';
 import 'package:appflowy_board/appflowy_board.dart';
@@ -30,15 +30,15 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   void initState() {
     super.initState();
 
-    final currentProject = ref.read(currentProjectP);
+    final tasks = ref.read(tasksListP);
 
-    L.debug("initState", currentProject);
+    L.debug("initState", tasks);
 
     final todoTasks = <AppFlowyGroupItem>[];
     final inProgessTasks = <AppFlowyGroupItem>[];
     final doneTasks = <AppFlowyGroupItem>[];
 
-    for (final task in currentProject!.tasks!) {
+    for (final task in tasks!) {
       if (task.state == TaskDtoState.todo) {
         todoTasks.add(TaskCardItem(task));
       }
@@ -50,12 +50,27 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
       }
     }
 
-    ref.read(boardControllerP).addGroup(
-        AppFlowyGroupData(id: "To Do", name: "To Do", items: todoTasks));
+    L.debug("todosTasks", todoTasks);
+    L.debug("inProgessTasks", inProgessTasks);
+    L.debug("doneTasks", doneTasks);
+
     ref.read(boardControllerP).addGroup(AppFlowyGroupData(
-        id: "In Progress", name: "In Progress", items: inProgessTasks));
-    ref.read(boardControllerP).addGroup(
-        AppFlowyGroupData(id: "Done", name: "Done", items: doneTasks));
+          id: "To Do",
+          name: "To Do",
+          items: todoTasks,
+        ));
+    ref.read(boardControllerP).addGroup(AppFlowyGroupData(
+          id: "In Progress",
+          name: "In Progress",
+          items: inProgessTasks,
+        ));
+    ref.read(boardControllerP).addGroup(AppFlowyGroupData(
+          id: "Done",
+          name: "Done",
+          items: doneTasks,
+        ));
+
+    L.debug("groupDatas", ref.read(boardControllerP).groupDatas);
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
+import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
@@ -55,11 +56,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ref
                       .read(currentProjectP.notifier)
                       .update((state) => state = project);
-                  context.maybePop();
-
-                  //TODO: update view
 
                   await ref.read(asyncProjectCrudP.notifier).getAllProjects();
+                  await ref.read(asyncTaskCrudP.notifier).getAllTasks();
+
+                  context.maybePop();
                 },
               );
             },
@@ -163,6 +164,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ref
                               .read(asyncProjectCrudP.notifier)
                               .createProject(newProjectDto);
+
+                          ref.invalidate(currentProjectP);
 
                           bottomsheetContext.maybePop();
                         }
