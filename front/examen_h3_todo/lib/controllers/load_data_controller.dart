@@ -15,6 +15,6 @@ final asyncLoadDataP = FutureProvider<void>((ref) async {
     final project = ref.read(projectsListP)!.first;
     ref.read(currentProjectP.notifier).update((state) => state = project);
 
-    ref.read(routerP).navigateNamed(Routes.home);
+    ref.read(routerP).replaceNamed(Routes.selectProject);
   });
 });

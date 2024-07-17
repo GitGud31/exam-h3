@@ -10,4 +10,6 @@ class Routes {
   static const String editTask = "/edit-task";
 
   static const String loadData = "/load-data";
+
+  static const String selectProject = "/select-project";
 }

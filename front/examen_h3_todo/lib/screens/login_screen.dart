@@ -45,7 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         Bar.success(ref, context, "Login successful");
 
-        ref.read(routerP).replaceNamed(Routes.home);
+        ref.read(routerP).replaceNamed(Routes.loadData);
       }
     }
   }

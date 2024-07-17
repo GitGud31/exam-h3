@@ -6,11 +6,11 @@ import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:examen_h3_todo/widgets/task_board_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerStatefulWidget {
@@ -135,7 +135,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 20),
+
+                  const Gap(20),
+
+                  // project description
                   TextFormField(
                     controller: descriptionController,
                     decoration: const InputDecoration(
@@ -149,7 +152,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
+
+                  const Gap(20),
+
+                  // add project button
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: MaterialButton(
@@ -188,10 +194,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   title: "new done task"),
                             ],
                           );
-
-                          final currentProfile = ref.read(currentProfileP)!;
-
-                          L.debug("add project", currentProfile);
 
                           ref
                               .read(asyncProjectCrudP.notifier)
@@ -279,22 +281,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           Expanded(
             flex: 1,
-            child: ref.watch(asyncProfileCrudP).when(
+            child: ref.watch(asyncProjectCrudP).when(
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (e, st) => Center(child: Text(e.toString())),
-                  data: (_) {
-                    return ref.watch(asyncProjectCrudP).when(
-                          loading: () =>
-                              const Center(child: CircularProgressIndicator()),
-                          error: (e, st) => Center(child: Text(e.toString())),
-                          data: (_) => Container(
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(16),
-                            child: const TaskBoardBuilder(),
-                          ),
-                        );
-                  },
+                  data: (_) => Container(
+                    alignment: Alignment.topCenter,
+                    padding: const EdgeInsets.all(16),
+                    child: const TaskBoardBuilder(),
+                  ),
                 ),
           ),
         ],

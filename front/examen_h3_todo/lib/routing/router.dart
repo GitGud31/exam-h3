@@ -6,6 +6,7 @@ import 'package:examen_h3_todo/screens/edit_task_screen.dart';
 import 'package:examen_h3_todo/screens/home_screen.dart';
 import 'package:examen_h3_todo/screens/load_data_screen.dart';
 import 'package:examen_h3_todo/screens/login_screen.dart';
+import 'package:examen_h3_todo/screens/select_project_screen.dart';
 import 'package:examen_h3_todo/screens/signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,6 +36,12 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           path: Routes.login,
           page: LoginRoute.page,
+        ),
+
+        //select project
+        AutoRoute(
+          path: Routes.selectProject,
+          page: SelectProjectRoute.page,
         ),
 
         //add profile
