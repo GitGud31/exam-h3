@@ -38,18 +38,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   void _signup() async {
     if (_formKey.currentState!.validate()) {
-      final result =
-          await ref.read(asyncProfileCrudP.notifier).createProfile(ProfileDto(
-                id: 0,
-                projects: [],
-                version: 0,
-                createdAt: DateTime.now(),
-                
-                firstName: _fnController.text.trim(),
-                lastName: _lnController.text.trim(),
-                email: _emailController.text.trim(),
-                password: _passwordController.text.trim(),
-              ));
+      final profileDto = ProfileDto(
+        id: 0,
+        projects: [],
+        version: 0,
+        createdAt: DateTime.now(),
+        firstName: _fnController.text.trim(),
+        lastName: _lnController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      final result = await ref
+          .read(asyncProfileCrudP.notifier)
+          .createProfile(context, profileDto);
 
       if (result) {
         _emailController.clear();
@@ -59,7 +61,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
         Bar.success(ref, context, "Profile created");
 
-        ref.read(routerP).navigateNamed(Routes.login);
+        ref.read(routerP).replaceNamed(Routes.login);
       } else {
         Bar.error(ref, context, "Error creating profile");
       }
@@ -136,6 +138,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   },
                 ),
               ),
+
               const Gap(16),
 
               //password
@@ -156,14 +159,28 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   },
                 ),
               ),
+
               const Gap(16),
 
+              // signup button
               SizedBox(
                 width: MediaQuery.sizeOf(context).width / 4,
                 child: MaterialButton(
                   color: lightGreen,
                   onPressed: _signup,
                   child: const Text('Signup'),
+                ),
+              ),
+
+              const Gap(16),
+
+              // go login button
+              GestureDetector(
+                onTap: () => ref.read(routerP).replaceNamed(Routes.login),
+                child: const Text(
+                  'Already have an account? Go Login',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline, color: black),
                 ),
               ),
             ],
