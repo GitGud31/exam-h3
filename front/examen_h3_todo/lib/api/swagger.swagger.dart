@@ -90,6 +90,28 @@ abstract class Swagger extends ChopperService {
   Future<chopper.Response> _profilesIdDelete({@Path('id') required int? id});
 
   ///
+  ///@param idProject
+  Future<chopper.Response<ProjectDto>> profilesProjectsIdProjectPut({
+    required int? idProject,
+    required ProjectDto? body,
+  }) {
+    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
+
+    return _profilesProjectsIdProjectPut(idProject: idProject, body: body);
+  }
+
+  ///
+  ///@param idProject
+  @Put(
+    path: '/profiles/projects/{idProject}',
+    optionalBody: true,
+  )
+  Future<chopper.Response<ProjectDto>> _profilesProjectsIdProjectPut({
+    @Path('idProject') required int? idProject,
+    @Body() required ProjectDto? body,
+  });
+
+  ///
   ///@param id
   Future<chopper.Response<TaskDto>> profilesProjectsTasksIdGet(
       {required int? id}) {
@@ -140,6 +162,33 @@ abstract class Swagger extends ChopperService {
 
   ///
   ///@param id
+  ///@param idProfile
+  Future<chopper.Response<TaskDto>>
+      profilesProjectsTasksIdProfileGuestIdProfilePut({
+    required int? id,
+    required int? idProfile,
+  }) {
+    generatedMapping.putIfAbsent(TaskDto, () => TaskDto.fromJsonFactory);
+
+    return _profilesProjectsTasksIdProfileGuestIdProfilePut(
+        id: id, idProfile: idProfile);
+  }
+
+  ///
+  ///@param id
+  ///@param idProfile
+  @Put(
+    path: '/profiles/projects/tasks/{id}/profile_guest/{idProfile}',
+    optionalBody: true,
+  )
+  Future<chopper.Response<TaskDto>>
+      _profilesProjectsTasksIdProfileGuestIdProfilePut({
+    @Path('id') required int? id,
+    @Path('idProfile') required int? idProfile,
+  });
+
+  ///
+  ///@param id
   Future<chopper.Response<SubTaskDto>> profilesProjectsTasksSubtasksIdGet(
       {required int? id}) {
     generatedMapping.putIfAbsent(SubTaskDto, () => SubTaskDto.fromJsonFactory);
@@ -176,38 +225,18 @@ abstract class Swagger extends ChopperService {
   });
 
   ///
-  ///@param idProject
-  Future<chopper.Response<ProjectDto>> profilesProjectsProfileIdProjectPut({
-    required int? idProject,
-    required ProjectDto? body,
-  }) {
-    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
-
-    return _profilesProjectsProfileIdProjectPut(
-        idProject: idProject, body: body);
-  }
-
-  ///
-  ///@param idProject
-  @Put(
-    path: '/profiles/projects/profile/{idProject}',
-    optionalBody: true,
-  )
-  Future<chopper.Response<ProjectDto>> _profilesProjectsProfileIdProjectPut({
-    @Path('idProject') required int? idProject,
-    @Body() required ProjectDto? body,
-  });
-
-  ///
-  Future<chopper.Response<List<ProfileDto>>> profilesGet() {
+  ///@param firstName
+  Future<chopper.Response<List<ProfileDto>>> profilesGet({String? firstName}) {
     generatedMapping.putIfAbsent(ProfileDto, () => ProfileDto.fromJsonFactory);
 
-    return _profilesGet();
+    return _profilesGet(firstName: firstName);
   }
 
   ///
+  ///@param firstName
   @Get(path: '/profiles')
-  Future<chopper.Response<List<ProfileDto>>> _profilesGet();
+  Future<chopper.Response<List<ProfileDto>>> _profilesGet(
+      {@Query('firstName') String? firstName});
 
   ///
   Future<chopper.Response<ProfileDto>> profilesPost(
@@ -226,10 +255,53 @@ abstract class Swagger extends ChopperService {
       {@Body() required ProfileDto? body});
 
   ///
+  Future<chopper.Response<ProfileDto>> profilesResetPwdPost(
+      {required ProfileForgetPwdDto? body}) {
+    generatedMapping.putIfAbsent(ProfileDto, () => ProfileDto.fromJsonFactory);
+
+    return _profilesResetPwdPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/profiles/reset_pwd',
+    optionalBody: true,
+  )
+  Future<chopper.Response<ProfileDto>> _profilesResetPwdPost(
+      {@Body() required ProfileForgetPwdDto? body});
+
+  ///
+  Future<chopper.Response<List<ProjectDto>>> profilesProjectsGet() {
+    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
+
+    return _profilesProjectsGet();
+  }
+
+  ///
+  @Get(path: '/profiles/projects')
+  Future<chopper.Response<List<ProjectDto>>> _profilesProjectsGet();
+
+  ///
+  Future<chopper.Response<ProjectDto>> profilesProjectsPost(
+      {required ProjectDto? body}) {
+    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
+
+    return _profilesProjectsPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/profiles/projects',
+    optionalBody: true,
+  )
+  Future<chopper.Response<ProjectDto>> _profilesProjectsPost(
+      {@Body() required ProjectDto? body});
+
+  ///
   ///@param idProject
   Future<chopper.Response<TaskDto>> profilesProjectsIdProjectTasksPost({
     required int? idProject,
-    required Task? body,
+    required TaskDto? body,
   }) {
     generatedMapping.putIfAbsent(TaskDto, () => TaskDto.fromJsonFactory);
 
@@ -245,7 +317,7 @@ abstract class Swagger extends ChopperService {
   )
   Future<chopper.Response<TaskDto>> _profilesProjectsIdProjectTasksPost({
     @Path('idProject') required int? idProject,
-    @Body() required Task? body,
+    @Body() required TaskDto? body,
   });
 
   ///
@@ -269,29 +341,6 @@ abstract class Swagger extends ChopperService {
       _profilesProjectsTasksIdTaskSubtasksPost({
     @Path('idTask') required int? idTask,
     @Body() required SubTaskDto? body,
-  });
-
-  ///
-  ///@param idProfile
-  Future<chopper.Response<ProjectDto>> profilesProjectsProfileIdProfilePost({
-    required int? idProfile,
-    required ProjectDto? body,
-  }) {
-    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
-
-    return _profilesProjectsProfileIdProfilePost(
-        idProfile: idProfile, body: body);
-  }
-
-  ///
-  ///@param idProfile
-  @Post(
-    path: '/profiles/projects/profile/{idProfile}',
-    optionalBody: true,
-  )
-  Future<chopper.Response<ProjectDto>> _profilesProjectsProfileIdProfilePost({
-    @Path('idProfile') required int? idProfile,
-    @Body() required ProjectDto? body,
   });
 
   ///
@@ -346,15 +395,19 @@ abstract class Swagger extends ChopperService {
       _profilesProjectsTasksSubtasksGet();
 
   ///
-  Future<chopper.Response<List<ProjectDto>>> profilesProjectsGet() {
-    generatedMapping.putIfAbsent(ProjectDto, () => ProjectDto.fromJsonFactory);
+  ///@param email
+  Future<chopper.Response<Response$>> profilesForgetPwdGet(
+      {required String? email}) {
+    generatedMapping.putIfAbsent(Response$, () => Response$.fromJsonFactory);
 
-    return _profilesProjectsGet();
+    return _profilesForgetPwdGet(email: email);
   }
 
   ///
-  @Get(path: '/profiles/projects/')
-  Future<chopper.Response<List<ProjectDto>>> _profilesProjectsGet();
+  ///@param email
+  @Get(path: '/profiles/forget_pwd')
+  Future<chopper.Response<Response$>> _profilesForgetPwdGet(
+      {@Query('email') required String? email});
 }
 
 typedef $JsonFactory<T> = T Function(Map<String, dynamic> json);

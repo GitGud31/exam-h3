@@ -6,6 +6,16 @@ part of 'swagger.models.swagger.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+ErrorInfo _$ErrorInfoFromJson(Map<String, dynamic> json) => ErrorInfo(
+      url: json['url'] as String?,
+      message: json['message'] as String?,
+    );
+
+Map<String, dynamic> _$ErrorInfoToJson(ErrorInfo instance) => <String, dynamic>{
+      'url': instance.url,
+      'message': instance.message,
+    };
+
 ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => ProfileDto(
       id: (json['id'] as num?)?.toInt(),
       email: json['email'] as String?,
@@ -15,6 +25,7 @@ ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => ProfileDto(
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
+      version: (json['version'] as num?)?.toInt(),
       projects: (json['projects'] as List<dynamic>?)
               ?.map((e) => ProjectDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -29,6 +40,7 @@ Map<String, dynamic> _$ProfileDtoToJson(ProfileDto instance) =>
       'lastName': instance.lastName,
       'password': instance.password,
       'createdAt': instance.createdAt?.toIso8601String(),
+      'version': instance.version,
       'projects': instance.projects?.map((e) => e.toJson()).toList(),
     };
 
@@ -100,105 +112,25 @@ Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
       'subTasks': instance.subTasks?.map((e) => e.toJson()).toList(),
     };
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
-      id: (json['id'] as num?)?.toInt(),
+ProfileForgetPwdDto _$ProfileForgetPwdDtoFromJson(Map<String, dynamic> json) =>
+    ProfileForgetPwdDto(
       email: json['email'] as String?,
-      firstName: json['firstName'] as String?,
-      lastName: json['lastName'] as String?,
-      password: json['password'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      projects: (json['projects'] as List<dynamic>?)
-              ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      code: json['code'] as String?,
+      newPwd: json['newPwd'] as String?,
     );
 
-Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
-      'id': instance.id,
+Map<String, dynamic> _$ProfileForgetPwdDtoToJson(
+        ProfileForgetPwdDto instance) =>
+    <String, dynamic>{
       'email': instance.email,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'password': instance.password,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'projects': instance.projects?.map((e) => e.toJson()).toList(),
+      'code': instance.code,
+      'newPwd': instance.newPwd,
     };
 
-Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
-      id: (json['id'] as num?)?.toInt(),
-      profile: json['profile'] == null
-          ? null
-          : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-      tasks: (json['tasks'] as List<dynamic>?)
-              ?.map((e) => Task.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      description: json['description'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
+Response$ _$Response$FromJson(Map<String, dynamic> json) => Response$(
+      status: json['status'] as String?,
     );
 
-Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
-      'id': instance.id,
-      'profile': instance.profile?.toJson(),
-      'tasks': instance.tasks?.map((e) => e.toJson()).toList(),
-      'description': instance.description,
-      'createdAt': instance.createdAt?.toIso8601String(),
-    };
-
-SubTask _$SubTaskFromJson(Map<String, dynamic> json) => SubTask(
-      id: (json['id'] as num?)?.toInt(),
-      description: json['description'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      task: json['task'] == null
-          ? null
-          : Task.fromJson(json['task'] as Map<String, dynamic>),
-      checked: json['checked'] as bool?,
-    );
-
-Map<String, dynamic> _$SubTaskToJson(SubTask instance) => <String, dynamic>{
-      'id': instance.id,
-      'description': instance.description,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'task': instance.task?.toJson(),
-      'checked': instance.checked,
-    };
-
-Task _$TaskFromJson(Map<String, dynamic> json) => Task(
-      id: (json['id'] as num?)?.toInt(),
-      state: taskStateNullableFromJson(json['state']),
-      project: json['project'] == null
-          ? null
-          : Project.fromJson(json['project'] as Map<String, dynamic>),
-      creator: json['creator'] == null
-          ? null
-          : Profile.fromJson(json['creator'] as Map<String, dynamic>),
-      subTasks: (json['subTasks'] as List<dynamic>?)
-              ?.map((e) => SubTask.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      title: json['title'] as String?,
-      description: json['description'] as String?,
-      priority: json['priority'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      deadline: json['deadline'] as String?,
-    );
-
-Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-      'id': instance.id,
-      'state': taskStateNullableToJson(instance.state),
-      'project': instance.project?.toJson(),
-      'creator': instance.creator?.toJson(),
-      'subTasks': instance.subTasks?.map((e) => e.toJson()).toList(),
-      'title': instance.title,
-      'description': instance.description,
-      'priority': instance.priority,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'deadline': instance.deadline,
+Map<String, dynamic> _$Response$ToJson(Response$ instance) => <String, dynamic>{
+      'status': instance.status,
     };

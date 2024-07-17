@@ -29,6 +29,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -68,6 +78,16 @@
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -97,8 +117,69 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/profiles/projects/{idProject}": {
+            "put": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "updateProject",
+                "parameters": [
+                    {
+                        "name": "idProject",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectDto"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -121,6 +202,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -160,6 +251,16 @@
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -189,8 +290,68 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/profiles/projects/tasks/{id}/profile_guest/{idProfile}": {
+            "put": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "updateTaskGuest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "idProfile",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskDto"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -213,6 +374,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -252,6 +423,16 @@
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -265,54 +446,33 @@
                 }
             }
         },
-        "/profiles/projects/profile/{idProject}": {
-            "put": {
-                "tags": [
-                    "project-controller"
-                ],
-                "operationId": "updateProject",
-                "parameters": [
-                    {
-                        "name": "idProject",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProjectDto"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProjectDto"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/profiles": {
             "get": {
                 "tags": [
                     "profile-controller"
                 ],
                 "operationId": "getAllProfiles",
+                "parameters": [
+                    {
+                        "name": "firstName",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -344,12 +504,133 @@
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
                             "*/*": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ProfileDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profiles/reset_pwd": {
+            "post": {
+                "tags": [
+                    "profile-controller"
+                ],
+                "operationId": "resetPwd",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileForgetPwdDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profiles/projects": {
+            "get": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "getAllProjectsForUser",
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProjectDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "createProject",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectDto"
                                 }
                             }
                         }
@@ -378,13 +659,23 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Task"
+                                "$ref": "#/components/schemas/TaskDto"
                             }
                         }
                     },
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -426,53 +717,22 @@
                     "required": true
                 },
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
                             "*/*": {
                                 "schema": {
                                     "$ref": "#/components/schemas/SubTaskDto"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/profiles/projects/profile/{idProfile}": {
-            "post": {
-                "tags": [
-                    "project-controller"
-                ],
-                "operationId": "createProject",
-                "parameters": [
-                    {
-                        "name": "idProfile",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProjectDto"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProjectDto"
                                 }
                             }
                         }
@@ -498,6 +758,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -527,6 +797,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK"
                     }
@@ -540,6 +820,16 @@
                 ],
                 "operationId": "getAllTasks",
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -563,6 +853,16 @@
                 ],
                 "operationId": "getAllSubTasks",
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -579,22 +879,39 @@
                 }
             }
         },
-        "/profiles/projects/": {
+        "/profiles/forget_pwd": {
             "get": {
                 "tags": [
-                    "project-controller"
+                    "profile-controller"
                 ],
-                "operationId": "getAllProjects",
+                "operationId": "forgetPwd",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
                             "*/*": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProjectDto"
-                                    }
+                                    "$ref": "#/components/schemas/Response"
                                 }
                             }
                         }
@@ -620,6 +937,16 @@
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "OK"
                     }
@@ -629,6 +956,17 @@
     },
     "components": {
         "schemas": {
+            "ErrorInfo": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
             "ProfileDto": {
                 "type": "object",
                 "properties": {
@@ -651,6 +989,10 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int32"
                     },
                     "projects": {
                         "uniqueItems": true,
@@ -746,128 +1088,24 @@
                     }
                 }
             },
-            "Profile": {
+            "ProfileForgetPwdDto": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "email": {
                         "type": "string"
                     },
-                    "firstName": {
+                    "code": {
                         "type": "string"
                     },
-                    "lastName": {
+                    "newPwd": {
                         "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "projects": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Project"
-                        }
                     }
                 }
             },
-            "Project": {
+            "Response": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "profile": {
-                        "$ref": "#/components/schemas/Profile"
-                    },
-                    "tasks": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Task"
-                        }
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                }
-            },
-            "SubTask": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "task": {
-                        "$ref": "#/components/schemas/Task"
-                    },
-                    "checked": {
-                        "type": "boolean"
-                    }
-                }
-            },
-            "Task": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "state": {
-                        "type": "string",
-                        "enum": [
-                            "TODO",
-                            "IN_PROGRESS",
-                            "DONE"
-                        ]
-                    },
-                    "project": {
-                        "$ref": "#/components/schemas/Project"
-                    },
-                    "creator": {
-                        "$ref": "#/components/schemas/Profile"
-                    },
-                    "subTasks": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/SubTask"
-                        }
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "priority": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "deadline": {
+                    "status": {
                         "type": "string"
                     }
                 }

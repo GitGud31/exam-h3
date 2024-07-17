@@ -9,6 +9,58 @@ import 'swagger.enums.swagger.dart' as enums;
 part 'swagger.models.swagger.g.dart';
 
 @JsonSerializable(explicitToJson: true)
+class ErrorInfo {
+  const ErrorInfo({
+    this.url,
+    this.message,
+  });
+
+  factory ErrorInfo.fromJson(Map<String, dynamic> json) =>
+      _$ErrorInfoFromJson(json);
+
+  static const toJsonFactory = _$ErrorInfoToJson;
+  Map<String, dynamic> toJson() => _$ErrorInfoToJson(this);
+
+  @JsonKey(name: 'url')
+  final String? url;
+  @JsonKey(name: 'message')
+  final String? message;
+  static const fromJsonFactory = _$ErrorInfoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ErrorInfo &&
+            (identical(other.url, url) ||
+                const DeepCollectionEquality().equals(other.url, url)) &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(url) ^
+      const DeepCollectionEquality().hash(message) ^
+      runtimeType.hashCode;
+}
+
+extension $ErrorInfoExtension on ErrorInfo {
+  ErrorInfo copyWith({String? url, String? message}) {
+    return ErrorInfo(url: url ?? this.url, message: message ?? this.message);
+  }
+
+  ErrorInfo copyWithWrapped(
+      {Wrapped<String?>? url, Wrapped<String?>? message}) {
+    return ErrorInfo(
+        url: (url != null ? url.value : this.url),
+        message: (message != null ? message.value : this.message));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class ProfileDto {
   const ProfileDto({
     this.id,
@@ -17,6 +69,7 @@ class ProfileDto {
     this.lastName,
     this.password,
     this.createdAt,
+    this.version,
     this.projects,
   });
 
@@ -38,6 +91,8 @@ class ProfileDto {
   final String? password;
   @JsonKey(name: 'createdAt')
   final DateTime? createdAt;
+  @JsonKey(name: 'version')
+  final int? version;
   @JsonKey(name: 'projects', defaultValue: <ProjectDto>[])
   final List<ProjectDto>? projects;
   static const fromJsonFactory = _$ProfileDtoFromJson;
@@ -62,6 +117,9 @@ class ProfileDto {
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
+            (identical(other.version, version) ||
+                const DeepCollectionEquality()
+                    .equals(other.version, version)) &&
             (identical(other.projects, projects) ||
                 const DeepCollectionEquality()
                     .equals(other.projects, projects)));
@@ -78,6 +136,7 @@ class ProfileDto {
       const DeepCollectionEquality().hash(lastName) ^
       const DeepCollectionEquality().hash(password) ^
       const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(version) ^
       const DeepCollectionEquality().hash(projects) ^
       runtimeType.hashCode;
 }
@@ -90,6 +149,7 @@ extension $ProfileDtoExtension on ProfileDto {
       String? lastName,
       String? password,
       DateTime? createdAt,
+      int? version,
       List<ProjectDto>? projects}) {
     return ProfileDto(
         id: id ?? this.id,
@@ -98,6 +158,7 @@ extension $ProfileDtoExtension on ProfileDto {
         lastName: lastName ?? this.lastName,
         password: password ?? this.password,
         createdAt: createdAt ?? this.createdAt,
+        version: version ?? this.version,
         projects: projects ?? this.projects);
   }
 
@@ -108,6 +169,7 @@ extension $ProfileDtoExtension on ProfileDto {
       Wrapped<String?>? lastName,
       Wrapped<String?>? password,
       Wrapped<DateTime?>? createdAt,
+      Wrapped<int?>? version,
       Wrapped<List<ProjectDto>?>? projects}) {
     return ProfileDto(
         id: (id != null ? id.value : this.id),
@@ -116,6 +178,7 @@ extension $ProfileDtoExtension on ProfileDto {
         lastName: (lastName != null ? lastName.value : this.lastName),
         password: (password != null ? password.value : this.password),
         createdAt: (createdAt != null ? createdAt.value : this.createdAt),
+        version: (version != null ? version.value : this.version),
         projects: (projects != null ? projects.value : this.projects));
   }
 }
@@ -416,62 +479,37 @@ extension $TaskDtoExtension on TaskDto {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Profile {
-  const Profile({
-    this.id,
+class ProfileForgetPwdDto {
+  const ProfileForgetPwdDto({
     this.email,
-    this.firstName,
-    this.lastName,
-    this.password,
-    this.createdAt,
-    this.projects,
+    this.code,
+    this.newPwd,
   });
 
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
+  factory ProfileForgetPwdDto.fromJson(Map<String, dynamic> json) =>
+      _$ProfileForgetPwdDtoFromJson(json);
 
-  static const toJsonFactory = _$ProfileToJson;
-  Map<String, dynamic> toJson() => _$ProfileToJson(this);
+  static const toJsonFactory = _$ProfileForgetPwdDtoToJson;
+  Map<String, dynamic> toJson() => _$ProfileForgetPwdDtoToJson(this);
 
-  @JsonKey(name: 'id')
-  final int? id;
   @JsonKey(name: 'email')
   final String? email;
-  @JsonKey(name: 'firstName')
-  final String? firstName;
-  @JsonKey(name: 'lastName')
-  final String? lastName;
-  @JsonKey(name: 'password')
-  final String? password;
-  @JsonKey(name: 'createdAt')
-  final DateTime? createdAt;
-  @JsonKey(name: 'projects', defaultValue: <Project>[])
-  final List<Project>? projects;
-  static const fromJsonFactory = _$ProfileFromJson;
+  @JsonKey(name: 'code')
+  final String? code;
+  @JsonKey(name: 'newPwd')
+  final String? newPwd;
+  static const fromJsonFactory = _$ProfileForgetPwdDtoFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is Profile &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other is ProfileForgetPwdDto &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.firstName, firstName) ||
-                const DeepCollectionEquality()
-                    .equals(other.firstName, firstName)) &&
-            (identical(other.lastName, lastName) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastName, lastName)) &&
-            (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.projects, projects) ||
-                const DeepCollectionEquality()
-                    .equals(other.projects, projects)));
+            (identical(other.code, code) ||
+                const DeepCollectionEquality().equals(other.code, code)) &&
+            (identical(other.newPwd, newPwd) ||
+                const DeepCollectionEquality().equals(other.newPwd, newPwd)));
   }
 
   @override
@@ -479,99 +517,53 @@ class Profile {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(firstName) ^
-      const DeepCollectionEquality().hash(lastName) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(projects) ^
+      const DeepCollectionEquality().hash(code) ^
+      const DeepCollectionEquality().hash(newPwd) ^
       runtimeType.hashCode;
 }
 
-extension $ProfileExtension on Profile {
-  Profile copyWith(
-      {int? id,
-      String? email,
-      String? firstName,
-      String? lastName,
-      String? password,
-      DateTime? createdAt,
-      List<Project>? projects}) {
-    return Profile(
-        id: id ?? this.id,
+extension $ProfileForgetPwdDtoExtension on ProfileForgetPwdDto {
+  ProfileForgetPwdDto copyWith({String? email, String? code, String? newPwd}) {
+    return ProfileForgetPwdDto(
         email: email ?? this.email,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        password: password ?? this.password,
-        createdAt: createdAt ?? this.createdAt,
-        projects: projects ?? this.projects);
+        code: code ?? this.code,
+        newPwd: newPwd ?? this.newPwd);
   }
 
-  Profile copyWithWrapped(
-      {Wrapped<int?>? id,
-      Wrapped<String?>? email,
-      Wrapped<String?>? firstName,
-      Wrapped<String?>? lastName,
-      Wrapped<String?>? password,
-      Wrapped<DateTime?>? createdAt,
-      Wrapped<List<Project>?>? projects}) {
-    return Profile(
-        id: (id != null ? id.value : this.id),
+  ProfileForgetPwdDto copyWithWrapped(
+      {Wrapped<String?>? email,
+      Wrapped<String?>? code,
+      Wrapped<String?>? newPwd}) {
+    return ProfileForgetPwdDto(
         email: (email != null ? email.value : this.email),
-        firstName: (firstName != null ? firstName.value : this.firstName),
-        lastName: (lastName != null ? lastName.value : this.lastName),
-        password: (password != null ? password.value : this.password),
-        createdAt: (createdAt != null ? createdAt.value : this.createdAt),
-        projects: (projects != null ? projects.value : this.projects));
+        code: (code != null ? code.value : this.code),
+        newPwd: (newPwd != null ? newPwd.value : this.newPwd));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
-class Project {
-  const Project({
-    this.id,
-    this.profile,
-    this.tasks,
-    this.description,
-    this.createdAt,
+class Response$ {
+  const Response$({
+    this.status,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json) =>
-      _$ProjectFromJson(json);
+  factory Response$.fromJson(Map<String, dynamic> json) =>
+      _$Response$FromJson(json);
 
-  static const toJsonFactory = _$ProjectToJson;
-  Map<String, dynamic> toJson() => _$ProjectToJson(this);
+  static const toJsonFactory = _$Response$ToJson;
+  Map<String, dynamic> toJson() => _$Response$ToJson(this);
 
-  @JsonKey(name: 'id')
-  final int? id;
-  @JsonKey(name: 'profile')
-  final Profile? profile;
-  @JsonKey(name: 'tasks', defaultValue: <Task>[])
-  final List<Task>? tasks;
-  @JsonKey(name: 'description')
-  final String? description;
-  @JsonKey(name: 'createdAt')
-  final DateTime? createdAt;
-  static const fromJsonFactory = _$ProjectFromJson;
+  @JsonKey(name: 'status')
+  final String? status;
+  static const fromJsonFactory = _$Response$FromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is Project &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.profile, profile) ||
-                const DeepCollectionEquality()
-                    .equals(other.profile, profile)) &&
-            (identical(other.tasks, tasks) ||
-                const DeepCollectionEquality().equals(other.tasks, tasks)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)));
+        (other is Response$ &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
   }
 
   @override
@@ -579,280 +571,16 @@ class Project {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(profile) ^
-      const DeepCollectionEquality().hash(tasks) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      runtimeType.hashCode;
+      const DeepCollectionEquality().hash(status) ^ runtimeType.hashCode;
 }
 
-extension $ProjectExtension on Project {
-  Project copyWith(
-      {int? id,
-      Profile? profile,
-      List<Task>? tasks,
-      String? description,
-      DateTime? createdAt}) {
-    return Project(
-        id: id ?? this.id,
-        profile: profile ?? this.profile,
-        tasks: tasks ?? this.tasks,
-        description: description ?? this.description,
-        createdAt: createdAt ?? this.createdAt);
+extension $Response$Extension on Response$ {
+  Response$ copyWith({String? status}) {
+    return Response$(status: status ?? this.status);
   }
 
-  Project copyWithWrapped(
-      {Wrapped<int?>? id,
-      Wrapped<Profile?>? profile,
-      Wrapped<List<Task>?>? tasks,
-      Wrapped<String?>? description,
-      Wrapped<DateTime?>? createdAt}) {
-    return Project(
-        id: (id != null ? id.value : this.id),
-        profile: (profile != null ? profile.value : this.profile),
-        tasks: (tasks != null ? tasks.value : this.tasks),
-        description:
-            (description != null ? description.value : this.description),
-        createdAt: (createdAt != null ? createdAt.value : this.createdAt));
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class SubTask {
-  const SubTask({
-    this.id,
-    this.description,
-    this.createdAt,
-    this.task,
-    this.checked,
-  });
-
-  factory SubTask.fromJson(Map<String, dynamic> json) =>
-      _$SubTaskFromJson(json);
-
-  static const toJsonFactory = _$SubTaskToJson;
-  Map<String, dynamic> toJson() => _$SubTaskToJson(this);
-
-  @JsonKey(name: 'id')
-  final int? id;
-  @JsonKey(name: 'description')
-  final String? description;
-  @JsonKey(name: 'createdAt')
-  final DateTime? createdAt;
-  @JsonKey(name: 'task')
-  final Task? task;
-  @JsonKey(name: 'checked')
-  final bool? checked;
-  static const fromJsonFactory = _$SubTaskFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is SubTask &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.task, task) ||
-                const DeepCollectionEquality().equals(other.task, task)) &&
-            (identical(other.checked, checked) ||
-                const DeepCollectionEquality().equals(other.checked, checked)));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(task) ^
-      const DeepCollectionEquality().hash(checked) ^
-      runtimeType.hashCode;
-}
-
-extension $SubTaskExtension on SubTask {
-  SubTask copyWith(
-      {int? id,
-      String? description,
-      DateTime? createdAt,
-      Task? task,
-      bool? checked}) {
-    return SubTask(
-        id: id ?? this.id,
-        description: description ?? this.description,
-        createdAt: createdAt ?? this.createdAt,
-        task: task ?? this.task,
-        checked: checked ?? this.checked);
-  }
-
-  SubTask copyWithWrapped(
-      {Wrapped<int?>? id,
-      Wrapped<String?>? description,
-      Wrapped<DateTime?>? createdAt,
-      Wrapped<Task?>? task,
-      Wrapped<bool?>? checked}) {
-    return SubTask(
-        id: (id != null ? id.value : this.id),
-        description:
-            (description != null ? description.value : this.description),
-        createdAt: (createdAt != null ? createdAt.value : this.createdAt),
-        task: (task != null ? task.value : this.task),
-        checked: (checked != null ? checked.value : this.checked));
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class Task {
-  const Task({
-    this.id,
-    this.state,
-    this.project,
-    this.creator,
-    this.subTasks,
-    this.title,
-    this.description,
-    this.priority,
-    this.createdAt,
-    this.deadline,
-  });
-
-  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-
-  static const toJsonFactory = _$TaskToJson;
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
-
-  @JsonKey(name: 'id')
-  final int? id;
-  @JsonKey(
-    name: 'state',
-    toJson: taskStateNullableToJson,
-    fromJson: taskStateNullableFromJson,
-  )
-  final enums.TaskState? state;
-  @JsonKey(name: 'project')
-  final Project? project;
-  @JsonKey(name: 'creator')
-  final Profile? creator;
-  @JsonKey(name: 'subTasks', defaultValue: <SubTask>[])
-  final List<SubTask>? subTasks;
-  @JsonKey(name: 'title')
-  final String? title;
-  @JsonKey(name: 'description')
-  final String? description;
-  @JsonKey(name: 'priority')
-  final String? priority;
-  @JsonKey(name: 'createdAt')
-  final DateTime? createdAt;
-  @JsonKey(name: 'deadline')
-  final String? deadline;
-  static const fromJsonFactory = _$TaskFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is Task &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)) &&
-            (identical(other.project, project) ||
-                const DeepCollectionEquality()
-                    .equals(other.project, project)) &&
-            (identical(other.creator, creator) ||
-                const DeepCollectionEquality()
-                    .equals(other.creator, creator)) &&
-            (identical(other.subTasks, subTasks) ||
-                const DeepCollectionEquality()
-                    .equals(other.subTasks, subTasks)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.priority, priority) ||
-                const DeepCollectionEquality()
-                    .equals(other.priority, priority)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.deadline, deadline) ||
-                const DeepCollectionEquality()
-                    .equals(other.deadline, deadline)));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(state) ^
-      const DeepCollectionEquality().hash(project) ^
-      const DeepCollectionEquality().hash(creator) ^
-      const DeepCollectionEquality().hash(subTasks) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(priority) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(deadline) ^
-      runtimeType.hashCode;
-}
-
-extension $TaskExtension on Task {
-  Task copyWith(
-      {int? id,
-      enums.TaskState? state,
-      Project? project,
-      Profile? creator,
-      List<SubTask>? subTasks,
-      String? title,
-      String? description,
-      String? priority,
-      DateTime? createdAt,
-      String? deadline}) {
-    return Task(
-        id: id ?? this.id,
-        state: state ?? this.state,
-        project: project ?? this.project,
-        creator: creator ?? this.creator,
-        subTasks: subTasks ?? this.subTasks,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        priority: priority ?? this.priority,
-        createdAt: createdAt ?? this.createdAt,
-        deadline: deadline ?? this.deadline);
-  }
-
-  Task copyWithWrapped(
-      {Wrapped<int?>? id,
-      Wrapped<enums.TaskState?>? state,
-      Wrapped<Project?>? project,
-      Wrapped<Profile?>? creator,
-      Wrapped<List<SubTask>?>? subTasks,
-      Wrapped<String?>? title,
-      Wrapped<String?>? description,
-      Wrapped<String?>? priority,
-      Wrapped<DateTime?>? createdAt,
-      Wrapped<String?>? deadline}) {
-    return Task(
-        id: (id != null ? id.value : this.id),
-        state: (state != null ? state.value : this.state),
-        project: (project != null ? project.value : this.project),
-        creator: (creator != null ? creator.value : this.creator),
-        subTasks: (subTasks != null ? subTasks.value : this.subTasks),
-        title: (title != null ? title.value : this.title),
-        description:
-            (description != null ? description.value : this.description),
-        priority: (priority != null ? priority.value : this.priority),
-        createdAt: (createdAt != null ? createdAt.value : this.createdAt),
-        deadline: (deadline != null ? deadline.value : this.deadline));
+  Response$ copyWithWrapped({Wrapped<String?>? status}) {
+    return Response$(status: (status != null ? status.value : this.status));
   }
 }
 
@@ -918,68 +646,6 @@ List<enums.TaskDtoState>? taskDtoStateNullableListFromJson(
   }
 
   return taskDtoState.map((e) => taskDtoStateFromJson(e.toString())).toList();
-}
-
-String? taskStateNullableToJson(enums.TaskState? taskState) {
-  return taskState?.value;
-}
-
-String? taskStateToJson(enums.TaskState taskState) {
-  return taskState.value;
-}
-
-enums.TaskState taskStateFromJson(
-  Object? taskState, [
-  enums.TaskState? defaultValue,
-]) {
-  return enums.TaskState.values.firstWhereOrNull((e) => e.value == taskState) ??
-      defaultValue ??
-      enums.TaskState.swaggerGeneratedUnknown;
-}
-
-enums.TaskState? taskStateNullableFromJson(
-  Object? taskState, [
-  enums.TaskState? defaultValue,
-]) {
-  if (taskState == null) {
-    return null;
-  }
-  return enums.TaskState.values.firstWhereOrNull((e) => e.value == taskState) ??
-      defaultValue;
-}
-
-String taskStateExplodedListToJson(List<enums.TaskState>? taskState) {
-  return taskState?.map((e) => e.value!).join(',') ?? '';
-}
-
-List<String> taskStateListToJson(List<enums.TaskState>? taskState) {
-  if (taskState == null) {
-    return [];
-  }
-
-  return taskState.map((e) => e.value!).toList();
-}
-
-List<enums.TaskState> taskStateListFromJson(
-  List? taskState, [
-  List<enums.TaskState>? defaultValue,
-]) {
-  if (taskState == null) {
-    return defaultValue ?? [];
-  }
-
-  return taskState.map((e) => taskStateFromJson(e.toString())).toList();
-}
-
-List<enums.TaskState>? taskStateNullableListFromJson(
-  List? taskState, [
-  List<enums.TaskState>? defaultValue,
-]) {
-  if (taskState == null) {
-    return defaultValue;
-  }
-
-  return taskState.map((e) => taskStateFromJson(e.toString())).toList();
 }
 
 // ignore: unused_element

@@ -15,19 +15,3 @@ enum TaskDtoState {
 
   const TaskDtoState(this.value);
 }
-
-enum TaskState {
-  @JsonValue(null)
-  swaggerGeneratedUnknown(null),
-
-  @JsonValue('TODO')
-  todo('TODO'),
-  @JsonValue('IN_PROGRESS')
-  inProgress('IN_PROGRESS'),
-  @JsonValue('DONE')
-  done('DONE');
-
-  final String? value;
-
-  const TaskState(this.value);
-}

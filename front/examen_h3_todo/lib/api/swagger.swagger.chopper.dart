@@ -56,6 +56,22 @@ final class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<ProjectDto>> _profilesProjectsIdProjectPut({
+    required int? idProject,
+    required ProjectDto? body,
+  }) {
+    final Uri $url = Uri.parse('/profiles/projects/${idProject}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<ProjectDto, ProjectDto>($request);
+  }
+
+  @override
   Future<Response<TaskDto>> _profilesProjectsTasksIdGet({required int? id}) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/${id}');
     final Request $request = Request(
@@ -94,6 +110,21 @@ final class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<TaskDto>> _profilesProjectsTasksIdProfileGuestIdProfilePut({
+    required int? id,
+    required int? idProfile,
+  }) {
+    final Uri $url =
+        Uri.parse('/profiles/projects/tasks/${id}/profile_guest/${idProfile}');
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<TaskDto, TaskDto>($request);
+  }
+
+  @override
   Future<Response<SubTaskDto>> _profilesProjectsTasksSubtasksIdGet(
       {required int? id}) {
     final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks/${id}');
@@ -122,28 +153,16 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<ProjectDto>> _profilesProjectsProfileIdProjectPut({
-    required int? idProject,
-    required ProjectDto? body,
-  }) {
-    final Uri $url = Uri.parse('/profiles/projects/profile/${idProject}');
-    final $body = body;
-    final Request $request = Request(
-      'PUT',
-      $url,
-      client.baseUrl,
-      body: $body,
-    );
-    return client.send<ProjectDto, ProjectDto>($request);
-  }
-
-  @override
-  Future<Response<List<ProfileDto>>> _profilesGet() {
+  Future<Response<List<ProfileDto>>> _profilesGet({String? firstName}) {
     final Uri $url = Uri.parse('/profiles');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'firstName': firstName
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      parameters: $params,
     );
     return client.send<List<ProfileDto>, ProfileDto>($request);
   }
@@ -162,9 +181,48 @@ final class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<ProfileDto>> _profilesResetPwdPost(
+      {required ProfileForgetPwdDto? body}) {
+    final Uri $url = Uri.parse('/profiles/reset_pwd');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<ProfileDto, ProfileDto>($request);
+  }
+
+  @override
+  Future<Response<List<ProjectDto>>> _profilesProjectsGet() {
+    final Uri $url = Uri.parse('/profiles/projects');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<List<ProjectDto>, ProjectDto>($request);
+  }
+
+  @override
+  Future<Response<ProjectDto>> _profilesProjectsPost(
+      {required ProjectDto? body}) {
+    final Uri $url = Uri.parse('/profiles/projects');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<ProjectDto, ProjectDto>($request);
+  }
+
+  @override
   Future<Response<TaskDto>> _profilesProjectsIdProjectTasksPost({
     required int? idProject,
-    required Task? body,
+    required TaskDto? body,
   }) {
     final Uri $url = Uri.parse('/profiles/projects/${idProject}/tasks');
     final $body = body;
@@ -191,22 +249,6 @@ final class _$Swagger extends Swagger {
       body: $body,
     );
     return client.send<SubTaskDto, SubTaskDto>($request);
-  }
-
-  @override
-  Future<Response<ProjectDto>> _profilesProjectsProfileIdProfilePost({
-    required int? idProfile,
-    required ProjectDto? body,
-  }) {
-    final Uri $url = Uri.parse('/profiles/projects/profile/${idProfile}');
-    final $body = body;
-    final Request $request = Request(
-      'POST',
-      $url,
-      client.baseUrl,
-      body: $body,
-    );
-    return client.send<ProjectDto, ProjectDto>($request);
   }
 
   @override
@@ -254,13 +296,15 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<ProjectDto>>> _profilesProjectsGet() {
-    final Uri $url = Uri.parse('/profiles/projects/');
+  Future<Response<Response$>> _profilesForgetPwdGet({required String? email}) {
+    final Uri $url = Uri.parse('/profiles/forget_pwd');
+    final Map<String, dynamic> $params = <String, dynamic>{'email': email};
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      parameters: $params,
     );
-    return client.send<List<ProjectDto>, ProjectDto>($request);
+    return client.send<Response$, Response$>($request);
   }
 }

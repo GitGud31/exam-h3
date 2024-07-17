@@ -10,13 +10,12 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
   @override
   FutureOr<void> build() {}
 
-  void createProject(int id, ProjectDto project) async {
+  void createProject(ProjectDto project) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref
-          .read(swaggerP)
-          .profilesProjectsProfileIdProfilePost(idProfile: id, body: project);
+      final response =
+          await ref.read(swaggerP).profilesProjectsPost(body: project);
 
       if (response.statusCode == 200) {
         ref
@@ -37,10 +36,8 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref
-          .read(swaggerP)
-          .profilesProjectsProfileIdProjectPut(
-              idProject: updatedProject.id, body: updatedProject);
+      final response = await ref.read(swaggerP).profilesProjectsIdProjectPut(
+          idProject: updatedProject.id, body: updatedProject);
 
       if (response.statusCode == 200) {
         ref
