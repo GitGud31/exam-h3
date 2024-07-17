@@ -49,6 +49,7 @@ public class ApplicationSecurity {
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/v2/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/profiles").permitAll()
+                                .requestMatchers("/profiles/forget_pwd").permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers(req -> req.getRequestURI().contains("forget_pwd")).permitAll()
                                 .requestMatchers(req -> req.getRequestURI().contains("reset_pwd")).permitAll()

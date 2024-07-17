@@ -1,10 +1,14 @@
 package com.h3hitema.examBack.controller;
 
+import com.h3hitema.examBack.config.SecurityUtils;
 import com.h3hitema.examBack.controller.mapper.ProfileMapper;
 import com.h3hitema.examBack.dto.ProfileDto;
 import com.h3hitema.examBack.dto.ProfileForgetPwdDto;
 import com.h3hitema.examBack.dto.Response;
 import com.h3hitema.examBack.service.ProfileService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +20,8 @@ import java.util.Objects;
 public record ProfileController(ProfileService profileService) {
 
     @GetMapping
+    @SecurityRequirement(name = "Authorization")
+    @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public List<ProfileDto> getAllProfiles(
             @RequestParam(value = "firstName", required = false) String firstName
     ) {
@@ -28,12 +34,17 @@ public record ProfileController(ProfileService profileService) {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Authorization")
+    @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public ProfileDto getProfileById(@PathVariable Long id) {
         return ProfileMapper.toDto(profileService.getProfileById(id));
     }
 
-    @GetMapping("/byemail")
-    public ProfileDto getProfileByEmail(@RequestParam(value = "email") String email) {
+    @GetMapping("/current")
+    @SecurityRequirement(name = "Authorization")
+    @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
+    public ProfileDto getProfileByEmail() {
+        String email = SecurityUtils.getCurrentUserLogin();
         return ProfileMapper.toDto(profileService.getProfileByEmail(email));
     }
 
@@ -43,11 +54,15 @@ public record ProfileController(ProfileService profileService) {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Authorization")
+    @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public ProfileDto updateProfile(@PathVariable Long id, @RequestBody ProfileDto profileDetailsDto) {
         return ProfileMapper.toDto(profileService.updateProfile(id, ProfileMapper.toEntity(profileDetailsDto)));
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Authorization")
+    @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public void deleteProfile(@PathVariable Long id) {
         profileService.deleteProfile(id);
     }
