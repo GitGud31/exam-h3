@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
@@ -6,22 +8,20 @@ import 'package:examen_h3_todo/consts/urls.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:examen_h3_todo/logger.dart';
+import 'package:examen_h3_todo/utils/snackbar_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileCrudNotifier extends AsyncNotifier<void> {
   @override
   FutureOr<void> build() async {}
 
-  Future<bool> createProfile(ProfileDto profile) async {
+  Future<bool> createProfile(BuildContext context, ProfileDto profile) async {
     state = const AsyncLoading();
-      L.debug("create profile", profile);
 
     bool result = false;
     state = await AsyncValue.guard<void>(() async {
       final response = await ref.read(swaggerP).profilesPost(body: profile);
-
-      L.debug("create profile", response);
-
 
       if (response.statusCode == 200) {
         ref
@@ -31,46 +31,57 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
         result = true;
         return;
       } else {
+        Bar.error(
+            ref, context, "Error (${response.statusCode}) Creating Profile");
+
         state = AsyncValue.error(
           "Code (${response.statusCode}), Create Profile: ${response.error as String}",
           StackTrace.current,
         );
-
-        result = false;
       }
     });
 
     return result;
   }
 
-  //TODO; finish implmentation
-  void loginProfile(String email, String password) async {
+  Future<bool> loginProfile(
+      BuildContext context, String email, String password) async {
     state = const AsyncLoading();
 
+    bool result = false;
     state = await AsyncValue.guard<void>(() async {
-      final response = await ref
-          .read(swaggerP)
-          .client
-          .post(Uri.parse("${Url.baseUrl}/login"), body: {
-        "email": "test@test.com",
-        "password": "test",
+      final loginUrl = Uri.parse("${Url.baseUrl}/login");
+      final response = await ref.read(swaggerP).client.post(loginUrl, body: {
+        "email": email,
+        "password": password,
       });
+
+      L.debug("login profile", response);
 
       if (response.statusCode == 200) {
         /*  ref
             .read(currentProfileP.notifier)
             .update((state) => state = response.bodyOrThrow); */
 
-        L.debug("login profile", response);
+        //TODO save token
+        //TODO select currentProfile
+
+        result = true;
+        return;
       } else {
+        Bar.error(ref, context,
+            "Error (${response.statusCode}) Error Log in Profile");
+
         state = AsyncValue.error(
           "Code (${response.statusCode}), Login Profile: ${response.error as String}",
           StackTrace.current,
         );
       }
 
-      return Future.delayed(Duration.zero);
+      return;
     });
+
+    return result;
   }
 
   void updateProfile(ProfileDto updatedProfile) async {
