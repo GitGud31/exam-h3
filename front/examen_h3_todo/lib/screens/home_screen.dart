@@ -221,7 +221,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final currentProfile = ref.watch(currentProfileP);
     final currentProfileName = (currentProfile == null)
-        ? "NoProfile"
+        ? "No Profile"
         : "Welcome, ${currentProfile.firstName}";
 
     final currentProject =
