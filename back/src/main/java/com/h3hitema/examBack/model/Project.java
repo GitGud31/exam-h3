@@ -25,7 +25,7 @@ public class Project extends AbstractEntity {
     )
     private Profile profile;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<Task> tasks = new HashSet<>();
     private String description;

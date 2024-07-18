@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/profiles/projects/")
 @SecurityRequirement(name = "Authorization")
 public record TaskController(TaskService taskService) {
-    @GetMapping("tasks")
+    @GetMapping("{idProject}/tasks")
     @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
-    public List<TaskDto> getAllTasks() {
-        return taskService.getAllTasks().stream().map(TaskMapper::toDto).toList();
+    public List<TaskDto> getAllTasks(@PathVariable Long idProject) {
+        return taskService.getAllTasks(idProject).stream().map(TaskMapper::toDto).toList();
     }
 
     @GetMapping("tasks/{id}")

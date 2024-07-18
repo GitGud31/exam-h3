@@ -1,6 +1,7 @@
 package com.h3hitema.examBack.dto;
 
 import com.h3hitema.examBack.model.enums.State;
+import com.h3hitema.examBack.model.enums.TaskPriority;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,9 @@ public class TaskDto {
     private String title;
     private String description;
     private State state;
-    private String priority;
+    private TaskPriority priority;
     private LocalDateTime createdAt;
-    private String deadline;
+    private LocalDateTime deadline;
     private ProfileDto creator;
     @Builder.Default
     private Set<SubTaskDto> subTasks = new HashSet<>();;

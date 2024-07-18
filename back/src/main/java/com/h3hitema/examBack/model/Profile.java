@@ -1,6 +1,7 @@
 package com.h3hitema.examBack.model;
 
 import com.h3hitema.examBack.model.commun.AbstractEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -23,7 +24,7 @@ public class Profile extends AbstractEntity {
     private String lastName;
     private String password;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private Set<Project> projects;
 
     private String codeForgetPwd;

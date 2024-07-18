@@ -21,8 +21,8 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
     private final ProfileService profileService;
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getAllTasks(Long idProject) {
+        return taskRepository.findAllByProject_Id(idProject);
     }
 
     public Task getTaskById(Long id) {

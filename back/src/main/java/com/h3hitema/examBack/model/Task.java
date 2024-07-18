@@ -2,9 +2,11 @@ package com.h3hitema.examBack.model;
 
 import com.h3hitema.examBack.model.commun.AbstractEntity;
 import com.h3hitema.examBack.model.enums.State;
+import com.h3hitema.examBack.model.enums.TaskPriority;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Task  extends AbstractEntity {
+public class Task extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private State state;
 
@@ -29,13 +31,15 @@ public class Task  extends AbstractEntity {
     @JoinColumn(name = "creator_id")
     private Profile creator;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<SubTask> subTasks;
+
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
     private String title;
     private String description;
-    private String priority;
-    private String deadline;
+    private LocalDateTime deadline;
 
     @ManyToMany
     @JoinTable(
@@ -46,8 +50,7 @@ public class Task  extends AbstractEntity {
     @Builder.Default
     private List<Profile> taskGuests = new ArrayList<>();
 
-    //TODO
-    public Task updateTask(Task task){
+    public Task updateTask(Task task) {
         this.description = task.getDescription();
         this.title = task.getTitle();
         this.priority = task.getPriority();
