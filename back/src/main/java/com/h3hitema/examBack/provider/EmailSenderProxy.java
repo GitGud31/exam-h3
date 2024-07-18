@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(value = "mailSend",
-        url = "${application.sayaaraty_mail_sender}/email",
+        url = "${application.mail_sender}/email",
         fallbackFactory = SendEmailFallbackFactory.class)
 public interface EmailSenderProxy {
 
