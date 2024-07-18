@@ -1,6 +1,7 @@
 package com.h3hitema.examBack.model;
 
 import com.h3hitema.examBack.model.commun.AbstractEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
