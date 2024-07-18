@@ -2,9 +2,9 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
+import 'package:examen_h3_todo/controllers/auth_controllfer.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
-import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
@@ -69,23 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           MaterialButton(
             color: white,
             child: Text("Logout", style: TextStyle(color: lightRed)),
-            onPressed: () {
-              ref.read(profileTokenP.notifier).update((state) => null);
-
-              ref.invalidate(currentProjectP);
-              ref.invalidate(currentProfileP);
-              ref.invalidate(currentTaskP);
-
-              ref.invalidate(profilesListP);
-              ref.invalidate(projectsListP);
-              ref.invalidate(tasksListP);
-
-              ref.invalidate(asyncProfileCrudP);
-              ref.invalidate(asyncProjectCrudP);
-              ref.invalidate(asyncTaskCrudP);
-
-              ref.read(routerP).replaceNamed(Routes.login);
-            },
+            onPressed: () => ref.read(authNotifierP.notifier).logout(),
           ),
 
           const Gap(32),

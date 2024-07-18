@@ -1,3 +1,4 @@
+import 'package:examen_h3_todo/controllers/auth_controllfer.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +17,13 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerP);
+
     return MaterialApp.router(
       scaffoldMessengerKey: ref.watch(scaffoldMessengerGlobalKeyP),
-      routerConfig: ref.watch(routerP).config(),
+      routerConfig: router.config(
+        reevaluateListenable: ref.watch(authNotifierP),
+      ),
     );
   }
 }

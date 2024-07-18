@@ -131,6 +131,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               color: black),
                         ),
                       ),
+
+                      const Gap(16),
+
+                      // go signup button
+                      GestureDetector(
+                        onTap: () => ref
+                            .read(routerP)
+                            .navigateNamed(Routes.forgotPassword),
+                        child: Text(
+                          "I Forgot my password",
+                          style: TextStyle(color: lightRed),
+                        ),
+                      ),
                     ],
                   ),
                 ),

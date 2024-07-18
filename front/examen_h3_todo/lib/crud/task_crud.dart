@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:chopper/chopper.dart';
 import 'package:examen_h3_todo/api/swagger.swagger.dart';
-import 'package:examen_h3_todo/controllers/profile_controller.dart';
+import 'package:examen_h3_todo/controllers/auth_controllfer.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
@@ -16,7 +16,7 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsIdProjectTasksPost(
@@ -42,7 +42,7 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
 
     bool result = false;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref.read(swaggerP).profilesProjectsTasksIdPut(
           authorization: token, id: id, body: updatedTask);
 
@@ -68,7 +68,7 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
 
     Response<List<TaskDto>>? response;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       response = await ref.read(swaggerP).profilesProjectsIdProjectTasksGet(
             idProject: ref.read(currentProjectP)!.id,
             authorization: token,
@@ -93,7 +93,7 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsTasksIdGet(authorization: token, id: id);
@@ -116,7 +116,7 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
 
     bool result = false;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsTasksIdDelete(authorization: token, id: id);
