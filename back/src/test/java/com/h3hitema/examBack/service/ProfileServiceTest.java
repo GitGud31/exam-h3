@@ -1,56 +1,66 @@
 package com.h3hitema.examBack.service;
 
-import com.h3hitema.examBack.dto.MailDataDto;
-import static org.mockito.Mockito.*;
-
-import com.h3hitema.examBack.dto.ProfileDto;
-import com.h3hitema.examBack.dto.SendMailStatus;
 import com.h3hitema.examBack.model.Profile;
 import com.h3hitema.examBack.provider.EmailSenderProxy;
 import com.h3hitema.examBack.repository.ProfileRepository;
-import com.h3hitema.examBack.util.Utils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ProfileServiceTest {
 
-    @Autowired
     ProfileService profileService;
-
+    @Mock
+    ProfileRepository profileRepository;
+    @Mock
+    PasswordEncoder oauthClientPasswordEncoder;
+    @Mock
+    EmailSenderProxy emailSenderProxy;
     @BeforeEach
     void setUp() {
-        // Any setup code goes here
+        profileService = new ProfileService(profileRepository, oauthClientPasswordEncoder, emailSenderProxy);
     }
 
     @Test
-    void testGetAllProfiles() {
+    void should_create_profile_when_call_method_and_user_not_exist() {
+        // Given
         Profile profile = new Profile();
         profile.setPassword("aaa");
         profile.setFirstName("test");
         profile.setEmail("all@gmail.com");
+        when(profileRepository.findUserByEmail(profile.getEmail())).thenReturn(Optional.empty());
+        // When
+        profileService.createProfile(profile);
+        // Then
+        verify(profileRepository).save(profile);
+    }
 
-        Profile savedProfile = profileService.createProfile(profile);
-        assertNotNull(savedProfile.getId());
-
-        List<Profile> profiles = profileService.getAllProfiles();
-        assertEquals(profiles.stream().count(),2);
-
-        profileService.deleteProfile(savedProfile.getId());
+    @Test
+    void should_throw_exception_when_call_method_and_user_exist() {
+        // Given
+        Profile profile = new Profile();
+        profile.setPassword("aaa");
+        profile.setFirstName("test");
+        profile.setEmail("all@gmail.com");
+        when(profileRepository.findUserByEmail(profile.getEmail())).thenReturn(Optional.of(profile));
+        // When Then
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                () -> profileService.createProfile(profile));
+        Assertions.assertThat(illegalArgumentException.getMessage()).isEqualTo("The user already exist");
     }
 
     @Test
