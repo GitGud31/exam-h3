@@ -1361,6 +1361,10 @@
                     "creator": {
                         "$ref": "#/components/schemas/ProfileDto"
                     },
+                    "version": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
                     "subTasks": {
                         "uniqueItems": true,
                         "type": "array",

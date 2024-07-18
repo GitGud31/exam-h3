@@ -1,5 +1,6 @@
 // ignore_for_file: type=lint
 
+
 import 'swagger.models.swagger.dart';
 import 'package:chopper/chopper.dart';
 

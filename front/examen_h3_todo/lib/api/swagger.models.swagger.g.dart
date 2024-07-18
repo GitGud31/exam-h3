@@ -96,6 +96,7 @@ TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
       creator: json['creator'] == null
           ? null
           : ProfileDto.fromJson(json['creator'] as Map<String, dynamic>),
+      version: (json['version'] as num?)?.toInt(),
       subTasks: (json['subTasks'] as List<dynamic>?)
               ?.map((e) => SubTaskDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -111,6 +112,7 @@ Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'deadline': instance.deadline?.toIso8601String(),
       'creator': instance.creator?.toJson(),
+      'version': instance.version,
       'subTasks': instance.subTasks?.map((e) => e.toJson()).toList(),
     };
 

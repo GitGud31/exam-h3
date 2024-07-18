@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:auto_route/auto_route.dart';
+import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
+import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
-import 'package:examen_h3_todo/routing/router.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +24,9 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
 
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  late TaskDtoPriority _priority;
+  late int selectedPriority = 1;
+  late DateTime _deadline;
 
   @override
   void initState() {
@@ -32,20 +37,27 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
     _titleController = TextEditingController(text: currentTask!.title);
     _descriptionController =
         TextEditingController(text: currentTask.description);
+
+    selectedPriority =
+        currentTask.priority == null ? 1 : currentTask.priority!.index;
+    _priority = currentTask.priority ?? TaskDtoPriority.low;
+
+    _deadline = currentTask.deadline ?? DateTime.now();
   }
 
   void _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: now,
       firstDate: DateTime(2020),
       lastDate: DateTime(2101),
     );
-    /* if (picked != null && picked != _deadline) {
-      setState(() {
-        _deadline = picked;
-      });
-    } */
+    if (picked != null) {
+      (picked.isBefore(now))
+          ? Bar.error(ref, context, "Please select a date in the future.")
+          : setState(() => _deadline = picked);
+    }
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) async {
@@ -98,9 +110,35 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
                     borderRadius: BorderRadius.circular(5)))),
             icon: const Icon(Icons.edit, color: white),
             label: const Text("Edit Task", style: TextStyle(color: white)),
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+
+                L.debug(
+                  "Edit Task",
+                  "title: ${_titleController.text}, description: ${_descriptionController.text}, priority: $_priority, deadline: $_deadline",
+                );
+
+                final result =
+                    await ref.read(asyncTaskCrudP.notifier).updateTask(
+                          ref.read(currentTaskP)!.id!,
+                          TaskDto(
+                              id: ref.read(currentTaskP)!.id,
+                              title: _titleController.text,
+                              description: _descriptionController.text,
+                              priority: _priority,
+                              deadline: _deadline,
+
+                              //TODO
+                              subTasks: []),
+                        );
+
+                if (result) {
+                  Bar.success(ref, context, "Task updated successfully");
+                  context.maybePop();
+                } else {
+                  Bar.error(ref, context, "Couldn't update task");
+                }
               }
             },
           ),
@@ -153,20 +191,38 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
                   labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
               ),
 
               const Gap(20),
 
               // priority
-              const Text(
-                'Priority',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Priority',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const Gap(10),
+                  Wrap(
+                    spacing: 5.0,
+                    children: List<Widget>.generate(3, (i) {
+                      final index = i + 1;
+                      final taskPriority = TaskDtoPriority.values[index];
+
+                      return ChoiceChip(
+                        label: Text(taskPriority.name),
+                        selected: selectedPriority == index,
+                        onSelected: (selected) => setState(() {
+                          if (selected) {
+                            _priority = taskPriority;
+                            selectedPriority = index;
+                          }
+                        }),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
 
               const Gap(20),
@@ -175,20 +231,26 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
               ListTile(
                 minLeadingWidth: 0,
                 contentPadding: EdgeInsets.zero,
-                title: const Text(
-                  'Deadline',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                title: Row(
+                  children: [
+                    const Text(
+                      'Deadline : ',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '${_deadline.year}/${_deadline.month}/${_deadline.day}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
-                /* subtitle: Text(
-                  _deadline != null ? _deadline.toString() : 'No date selected',
-                ), */
                 trailing: IconButton(
                   icon: const Icon(Icons.calendar_today),
-                  onPressed: () {
-                    _selectDate(context);
-                  },
+                  onPressed: () => _selectDate(context),
                 ),
               ),
+
+              //sub tasks
             ],
           ),
         ),

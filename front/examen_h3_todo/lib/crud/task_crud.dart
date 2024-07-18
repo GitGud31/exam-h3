@@ -37,18 +37,20 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  void updateTask(TaskDto updatedTask) async {
+  Future<bool> updateTask(int id, TaskDto updatedTask) async {
     state = const AsyncLoading();
 
+    bool result = false;
     state = await AsyncValue.guard<void>(() async {
       final token = ref.read(profileTokenP)?.token;
       final response = await ref.read(swaggerP).profilesProjectsTasksIdPut(
-          authorization: token, id: updatedTask.id, body: updatedTask);
+          authorization: token, id: id, body: updatedTask);
 
       if (response.statusCode == 200) {
-        ref
-            .read(currentTaskP.notifier)
-            .update((state) => state = response.bodyOrThrow);
+        // reset current task
+        ref.read(currentTaskP.notifier).update((state) => state = null);
+
+        result = true;
       } else {
         state = AsyncValue.error(
           "Code (${response.statusCode}), Update Task: ${response.error as String}",
@@ -56,6 +58,8 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
         );
       }
     });
+
+    return result;
   }
 
   Future<List<TaskDto>?> getAllTasks() async {

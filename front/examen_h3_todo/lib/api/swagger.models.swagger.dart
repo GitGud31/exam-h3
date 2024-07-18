@@ -351,6 +351,7 @@ class TaskDto {
     this.createdAt,
     this.deadline,
     this.creator,
+    this.version,
     this.subTasks,
   });
 
@@ -384,6 +385,8 @@ class TaskDto {
   final DateTime? deadline;
   @JsonKey(name: 'creator')
   final ProfileDto? creator;
+  @JsonKey(name: 'version')
+  final int? version;
   @JsonKey(name: 'subTasks', defaultValue: <SubTaskDto>[])
   final List<SubTaskDto>? subTasks;
   static const fromJsonFactory = _$TaskDtoFromJson;
@@ -413,6 +416,9 @@ class TaskDto {
             (identical(other.creator, creator) ||
                 const DeepCollectionEquality()
                     .equals(other.creator, creator)) &&
+            (identical(other.version, version) ||
+                const DeepCollectionEquality()
+                    .equals(other.version, version)) &&
             (identical(other.subTasks, subTasks) ||
                 const DeepCollectionEquality()
                     .equals(other.subTasks, subTasks)));
@@ -431,6 +437,7 @@ class TaskDto {
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(deadline) ^
       const DeepCollectionEquality().hash(creator) ^
+      const DeepCollectionEquality().hash(version) ^
       const DeepCollectionEquality().hash(subTasks) ^
       runtimeType.hashCode;
 }
@@ -445,6 +452,7 @@ extension $TaskDtoExtension on TaskDto {
       DateTime? createdAt,
       DateTime? deadline,
       ProfileDto? creator,
+      int? version,
       List<SubTaskDto>? subTasks}) {
     return TaskDto(
         id: id ?? this.id,
@@ -455,6 +463,7 @@ extension $TaskDtoExtension on TaskDto {
         createdAt: createdAt ?? this.createdAt,
         deadline: deadline ?? this.deadline,
         creator: creator ?? this.creator,
+        version: version ?? this.version,
         subTasks: subTasks ?? this.subTasks);
   }
 
@@ -467,6 +476,7 @@ extension $TaskDtoExtension on TaskDto {
       Wrapped<DateTime?>? createdAt,
       Wrapped<DateTime?>? deadline,
       Wrapped<ProfileDto?>? creator,
+      Wrapped<int?>? version,
       Wrapped<List<SubTaskDto>?>? subTasks}) {
     return TaskDto(
         id: (id != null ? id.value : this.id),
@@ -478,6 +488,7 @@ extension $TaskDtoExtension on TaskDto {
         createdAt: (createdAt != null ? createdAt.value : this.createdAt),
         deadline: (deadline != null ? deadline.value : this.deadline),
         creator: (creator != null ? creator.value : this.creator),
+        version: (version != null ? version.value : this.version),
         subTasks: (subTasks != null ? subTasks.value : this.subTasks));
   }
 }
