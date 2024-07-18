@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:examen_h3_todo/api/swagger.swagger.dart';
 import 'package:examen_h3_todo/consts/urls.dart';
+import 'package:examen_h3_todo/controllers/auth_controllfer.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:examen_h3_todo/models/user_token.dart';
@@ -47,7 +48,7 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response =
           await ref.read(swaggerP).profilesCurrentGet(authorization: token);
 
@@ -78,9 +79,8 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
 
       if (response.statusCode == 200) {
         //save token
-        ref
-            .read(profileTokenP.notifier)
-            .update((state) => state = UserToken.fromMap(response.bodyOrThrow));
+        ref.read(authNotifierP.notifier).updateUserToken =
+            UserToken.fromMap(response.bodyOrThrow);
 
         //get profile by email
         await getCurrentProfile();
@@ -105,7 +105,7 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref.read(swaggerP).profilesIdPut(
           authorization: token, id: updatedProfile.id, body: updatedProfile);
 
@@ -129,7 +129,7 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
 
     Response<List<ProfileDto>?>? response;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       response = await ref
           .read(swaggerP)
           .profilesGet(authorization: token, firstName: name);
@@ -153,7 +153,7 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response =
           await ref.read(swaggerP).profilesIdGet(authorization: token, id: id);
 
@@ -174,7 +174,7 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesIdDelete(authorization: token, id: id);

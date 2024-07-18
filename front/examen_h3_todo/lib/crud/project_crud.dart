@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:chopper/chopper.dart';
 import 'package:examen_h3_todo/api/swagger.swagger.dart';
-import 'package:examen_h3_todo/controllers/profile_controller.dart';
+import 'package:examen_h3_todo/controllers/auth_controllfer.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsPost(authorization: token, body: project);
@@ -39,7 +39,7 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref.read(swaggerP).profilesProjectsIdProjectPut(
           authorization: token,
           idProject: updatedProject.id,
@@ -63,7 +63,7 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
 
     Response<List<ProjectDto>?>? response;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       response =
           await ref.read(swaggerP).profilesProjectsGet(authorization: token);
 
@@ -86,7 +86,7 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsIdGet(authorization: token, id: id);
@@ -109,7 +109,7 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
 
     bool result = false;
     state = await AsyncValue.guard<void>(() async {
-      final token = ref.read(profileTokenP)?.token;
+      final token = ref.read(authNotifierP.notifier).userToken!.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsIdDelete(authorization: token, id: id);
