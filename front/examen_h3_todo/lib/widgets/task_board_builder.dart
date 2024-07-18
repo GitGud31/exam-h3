@@ -1,8 +1,10 @@
 import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
+import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/widgets/card_builder.dart';
 import 'package:examen_h3_todo/widgets/group_footer.dart';
 import 'package:examen_h3_todo/widgets/group_header.dart';
@@ -29,16 +31,20 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setupTasks());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final tasks = await ref.read(asyncTaskCrudP.notifier).getAllTasks();
+      setupTasks(tasks!);
+    });
   }
 
-  void setupTasks() {
+  void setupTasks(List<TaskDto> tasks) {
     final todoTasks = <AppFlowyGroupItem>[];
     final inProgessTasks = <AppFlowyGroupItem>[];
     final doneTasks = <AppFlowyGroupItem>[];
 
-    final tasks = ref.read(tasksListP);
-    for (final task in tasks!) {
+    L.debug("setupTasks", tasks);
+
+    for (final task in tasks) {
       if (task.state == TaskDtoState.todo) {
         todoTasks.add(TaskCardItem(task));
       }

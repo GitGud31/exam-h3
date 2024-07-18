@@ -6,7 +6,6 @@ import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TaskCrudNotifier extends AsyncNotifier<void> {
@@ -47,14 +46,10 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
       final response = await ref.read(swaggerP).profilesProjectsTasksIdPut(
           authorization: token, id: id, body: updatedTask);
 
-      L.debug("updateTask", response);
-
       if (response.statusCode == 200) {
-        // reset current task
         ref
             .read(currentTaskP.notifier)
             .update((state) => state = response.bodyOrThrow);
-        //await getAllTasks();
 
         result = true;
       } else {

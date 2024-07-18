@@ -5,7 +5,6 @@ import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
 import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +26,6 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
   late TaskDtoPriority _priority;
   late int selectedPriority = 1;
   late DateTime _deadline;
-  late List<SubTaskDto> _subTasks;
 
   @override
   void initState() {
@@ -44,8 +42,6 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
     _priority = currentTask.priority ?? TaskDtoPriority.low;
 
     _deadline = currentTask.deadline ?? DateTime.now();
-
-    _subTasks = currentTask.subTasks ?? [];
   }
 
   void _selectDate(BuildContext context) async {
@@ -117,11 +113,6 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
 
-                L.debug(
-                  "Edit Task",
-                  "title: ${_titleController.text}, description: ${_descriptionController.text}, priority: $_priority, deadline: $_deadline",
-                );
-
                 final result =
                     await ref.read(asyncTaskCrudP.notifier).updateTask(
                           ref.read(currentTaskP)!.id!,
@@ -132,9 +123,6 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
                             priority: _priority,
                             deadline: _deadline,
                             version: ref.read(currentTaskP)!.version!,
-
-                            //TODO
-                            subTasks: [],
                           ),
                         );
 
@@ -256,32 +244,6 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
                   onPressed: () => _selectDate(context),
                 ),
               ),
-
-              //sub tasks
-              /* Expanded(
-                flex: 1,
-                child: Column(
-                  children: [
-                    const Text(
-                      "Subtasks",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    Expanded(
-                      flex: 1,
-                      child: ListView.builder(
-                        itemCount: _subTasks.length,
-                        itemBuilder: (_, index) {
-                          return CheckboxListTile(
-                            value: false,
-                            onChanged: (selected) {},
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ), */
             ],
           ),
         ),

@@ -7,7 +7,6 @@ import 'package:examen_h3_todo/api/swagger.swagger.dart';
 import 'package:examen_h3_todo/consts/urls.dart';
 import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/swagger_controller.dart';
-import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/models/user_token.dart';
 import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +52,6 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
           await ref.read(swaggerP).profilesCurrentGet(authorization: token);
 
       if (response.statusCode == 200) {
-        L.debug("getCurrentProfile ${response.statusCode}", response);
         ref
             .read(currentProfileP.notifier)
             .update((state) => state = response.bodyOrThrow);
