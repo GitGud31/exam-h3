@@ -11,6 +11,7 @@ import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:examen_h3_todo/widgets/task_board_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerStatefulWidget {
@@ -48,8 +49,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         centerTitle: true,
         actions: [
+          // projects
           MaterialButton(
-            child: const Text("Logout", style: TextStyle(color: white)),
+            child: const Text("Projects", style: TextStyle(color: white)),
+            onPressed: () async {
+              final projects =
+                  await ref.read(asyncProjectCrudP.notifier).getAllProjects();
+
+              (projects == null)
+                  ? Bar.error(ref, context, "Error getting projects")
+                  //: listProjects(context, projects);
+                  : ref.read(routerP).navigateNamed(Routes.selectProject);
+            },
+          ),
+
+          const Gap(10),
+
+          //logout
+          MaterialButton(
+            color: white,
+            child: Text("Logout", style: TextStyle(color: lightRed)),
             onPressed: () {
               ref.read(profileTokenP.notifier).update((state) => null);
 
@@ -68,18 +87,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ref.read(routerP).replaceNamed(Routes.login);
             },
           ),
-          MaterialButton(
-            child: const Text("Projects", style: TextStyle(color: white)),
-            onPressed: () async {
-              final projects =
-                  await ref.read(asyncProjectCrudP.notifier).getAllProjects();
 
-              (projects == null)
-                  ? Bar.error(ref, context, "Error getting projects")
-                  //: listProjects(context, projects);
-                  : ref.read(routerP).navigateNamed(Routes.selectProject);
-            },
-          )
+          const Gap(32),
         ],
       ),
       body: Column(
