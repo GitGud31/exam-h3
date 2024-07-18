@@ -46,7 +46,7 @@ public record TaskController(TaskService taskService) {
         return TaskMapper.toDto(taskService.updateTaskGuests(id, idProfile));
     }
 
-    @DeleteMapping("tasks{id}")
+    @DeleteMapping("tasks/{id}")
     @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);

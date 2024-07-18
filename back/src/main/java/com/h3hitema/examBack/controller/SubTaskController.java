@@ -41,7 +41,7 @@ public record SubTaskController(SubTaskService subTaskService) {
         return SubTaskMapper.toDto(subTaskService.updateSubTask(id, SubTaskMapper.toEntity(subTaskDetails)));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("subtasks/{id}")
     @Parameter(name = "Authorization", description = "Bearer token", required = true, in = ParameterIn.HEADER)
     public void deleteSubTask(@PathVariable Long id) {
         subTaskService.deleteSubTask(id);
