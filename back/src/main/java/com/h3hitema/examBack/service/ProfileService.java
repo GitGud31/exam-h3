@@ -1,6 +1,5 @@
 package com.h3hitema.examBack.service;
 
-import com.h3hitema.examBack.config.ApplicationProperties;
 import com.h3hitema.examBack.dto.MailDataDto;
 import com.h3hitema.examBack.dto.ProfileForgetPwdDto;
 import com.h3hitema.examBack.dto.Response;
@@ -30,7 +29,6 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder oauthClientPasswordEncoder;
     private final EmailSenderProxy emailSenderProxy;
-    private final ApplicationProperties applicationProperties;
     public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
     }

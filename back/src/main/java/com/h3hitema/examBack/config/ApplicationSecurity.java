@@ -44,8 +44,7 @@ public class ApplicationSecurity {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/public/**").permitAll()
-                                .requestMatchers(req -> req.getRequestURI().contains("swagger-ui")).permitAll()
+                        authorize.requestMatchers(req -> req.getRequestURI().contains("swagger-ui")).permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/v2/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/profiles").permitAll()
@@ -53,7 +52,7 @@ public class ApplicationSecurity {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers(req -> req.getRequestURI().contains("forget_pwd")).permitAll()
                                 .requestMatchers(req -> req.getRequestURI().contains("reset_pwd")).permitAll()
-                                .anyRequest().authenticated())
+                                    .anyRequest().authenticated())
                 .addFilterBefore(new LoginFilter("/login", config.getAuthenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new AuthenticationFilter(),

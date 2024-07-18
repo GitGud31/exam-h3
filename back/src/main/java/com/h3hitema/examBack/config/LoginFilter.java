@@ -49,12 +49,4 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         AuthenticationService.addJWTToken(res, auth.getName(), auth.getAuthorities());
     }
 
-    private String decryptPassword(String encryptedPwd) {
-        try {
-            return new String(java.util.Base64.getDecoder().decode(encryptedPwd));
-        } catch (IllegalArgumentException e) {
-            log.error(e.getMessage());
-            return encryptedPwd;
-        }
-    }
 }

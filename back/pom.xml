@@ -136,7 +136,6 @@
 						src/main/resources/liquibase/changelog/${maven.build.timestamp}_changelog.xml
 					</diffChangeLogFile>
 					<propertyFile>liquibase.properties</propertyFile>
-
 					<referenceUrl>
 						hibernate:spring:com.h3hitema.examBack.model?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 					</referenceUrl>
