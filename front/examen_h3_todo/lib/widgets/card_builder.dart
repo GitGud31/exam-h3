@@ -1,6 +1,7 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
+import 'package:examen_h3_todo/logger.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:examen_h3_todo/widgets/task_card_item.dart';
@@ -29,8 +30,13 @@ class CardBuilder extends ConsumerWidget {
           ),
         ),
       ),
-      onTap: () {
-        ref.read(currentTaskP.notifier).state = (item as TaskCardItem).task;
+      onTap: () async {
+        final selectedTask =
+            ref.read(tasksListP)!.firstWhere((task) => task.title == item.id);
+
+        L.debug("selectedTask", selectedTask);
+
+        ref.read(currentTaskP.notifier).state = selectedTask;
 
         ref.read(routerP).navigateNamed(Routes.editTask);
       },

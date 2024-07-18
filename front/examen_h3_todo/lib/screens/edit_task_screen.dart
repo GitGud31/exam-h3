@@ -27,6 +27,7 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
   late TaskDtoPriority _priority;
   late int selectedPriority = 1;
   late DateTime _deadline;
+  late List<SubTaskDto> _subTasks;
 
   @override
   void initState() {
@@ -43,6 +44,8 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
     _priority = currentTask.priority ?? TaskDtoPriority.low;
 
     _deadline = currentTask.deadline ?? DateTime.now();
+
+    _subTasks = currentTask.subTasks ?? [];
   }
 
   void _selectDate(BuildContext context) async {
@@ -123,18 +126,22 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
                     await ref.read(asyncTaskCrudP.notifier).updateTask(
                           ref.read(currentTaskP)!.id!,
                           TaskDto(
-                              id: ref.read(currentTaskP)!.id,
-                              title: _titleController.text,
-                              description: _descriptionController.text,
-                              priority: _priority,
-                              deadline: _deadline,
+                            id: ref.read(currentTaskP)!.id,
+                            title: _titleController.text,
+                            description: _descriptionController.text,
+                            priority: _priority,
+                            deadline: _deadline,
+                            version: ref.read(currentTaskP)!.version!,
 
-                              //TODO
-                              subTasks: []),
+                            //TODO
+                            subTasks: [],
+                          ),
                         );
 
                 if (result) {
                   Bar.success(ref, context, "Task updated successfully");
+                  await ref.read(asyncTaskCrudP.notifier).getAllTasks();
+
                   context.maybePop();
                 } else {
                   Bar.error(ref, context, "Couldn't update task");
@@ -251,6 +258,30 @@ class _EditTaskScreenState extends ConsumerState<EditTaskScreen> {
               ),
 
               //sub tasks
+              /* Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Subtasks",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      flex: 1,
+                      child: ListView.builder(
+                        itemCount: _subTasks.length,
+                        itemBuilder: (_, index) {
+                          return CheckboxListTile(
+                            value: false,
+                            onChanged: (selected) {},
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ), */
             ],
           ),
         ),

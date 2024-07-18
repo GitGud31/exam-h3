@@ -1,8 +1,10 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
 import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
+import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/extensions/exntesion_on_void.dart';
@@ -54,6 +56,8 @@ class GroupFooter extends ConsumerWidget {
                   subTasks: [],
                   createdAt: DateTime.now(),
                   description: "",
+                  priority: TaskDtoPriority.low,
+                  creator: ref.read(currentProfileP),
                 );
 
                 ref.read(asyncTaskCrudP.notifier).createTask(
