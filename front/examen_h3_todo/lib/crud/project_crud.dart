@@ -104,21 +104,28 @@ class ProjectCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  void deleteProject(int id) async {
+  Future<bool> deleteProject(int id) async {
     state = const AsyncLoading();
 
+    bool result = false;
     state = await AsyncValue.guard<void>(() async {
       final token = ref.read(profileTokenP)?.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsIdDelete(authorization: token, id: id);
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
+        await ref.read(asyncProjectCrudP.notifier).getAllProjects();
+        result = true;
+        return;
+      } else {
         state = AsyncValue.error(
           "Code (${response.statusCode}), Delete Project: ${response.error as String}",
           StackTrace.current,
         );
       }
     });
+
+    return result;
   }
 }

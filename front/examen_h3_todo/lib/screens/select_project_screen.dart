@@ -10,6 +10,7 @@ import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/routing/router.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
+import 'package:examen_h3_todo/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -128,6 +129,40 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
     );
   }
 
+  void _showDeleteConfirmationDialog(
+      BuildContext context, int projectId) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this project?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => context.maybePop(),
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () async {
+                final result = await ref
+                    .read(asyncProjectCrudP.notifier)
+                    .deleteProject(projectId);
+
+                if (result) {
+                  Bar.success(ref, context, "Project deleted successfully");
+                  ref.read(routerP).maybePop();
+                } else {
+                  Bar.error(ref, context, "Couldn't delete project");
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final projects = ref.watch(projectsListP);
@@ -171,6 +206,11 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
                   return Card(
                     child: ListTile(
                       title: Text(project.description!),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: lightRed),
+                        onPressed: () =>
+                            _showDeleteConfirmationDialog(context, project.id!),
+                      ),
                       onTap: () async {
                         ref
                             .read(currentProjectP.notifier)
