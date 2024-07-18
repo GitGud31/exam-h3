@@ -1,5 +1,4 @@
 import 'package:examen_h3_todo/api/swagger.enums.swagger.dart';
-import 'package:examen_h3_todo/api/swagger.models.swagger.dart';
 import 'package:examen_h3_todo/consts/colors.dart';
 import 'package:examen_h3_todo/controllers/board_controller.dart';
 import 'package:examen_h3_todo/controllers/board_scroll_controller.dart';
@@ -31,17 +30,15 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final tasks = await ref.read(asyncTaskCrudP.notifier).getAllTasks();
-      setupTasks(tasks!);
-    });
+    setupTasks();
   }
 
-  void setupTasks(List<TaskDto> tasks) {
+void setupTasks() {
     final todoTasks = <AppFlowyGroupItem>[];
     final inProgessTasks = <AppFlowyGroupItem>[];
     final doneTasks = <AppFlowyGroupItem>[];
 
+    final tasks = ref.read(tasksListP)!;
     L.debug("setupTasks", tasks);
 
     for (final task in tasks) {
@@ -71,34 +68,38 @@ class _TaskBoardBuilderState extends ConsumerState<TaskBoardBuilder> {
           name: "Done",
           items: doneTasks,
         ));
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
-    return AppFlowyBoard(
-      controller: ref.watch(boardControllerP),
-      boardScrollController: ref.read(boardScrollControllerP),
-      config: config,
-      groupConstraints: BoxConstraints.tightFor(
-        width: MediaQuery.sizeOf(context).width * 0.3,
-      ),
+    return ref.watch(asyncTaskCrudP).when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, st) => Center(child: Text(e.toString())),
+          data: (_) => AppFlowyBoard(
+            controller: ref.watch(boardControllerP),
+            boardScrollController: ref.read(boardScrollControllerP),
+            config: config,
+            groupConstraints: BoxConstraints.tightFor(
+              width: MediaQuery.sizeOf(context).width * 0.3,
+            ),
 
-      cardBuilder: (context, group, groupItem) => AppFlowyGroupCard(
-        key: ValueKey(groupItem.id),
-        child: CardBuilder(item: groupItem),
-      ),
+            cardBuilder: (context, group, groupItem) => AppFlowyGroupCard(
+              key: ValueKey(groupItem.id),
+              child: CardBuilder(item: groupItem),
+            ),
 
-      //header
-      headerBuilder: (_, columnData) => GroupHeader(
-        config: config,
-        columnData: columnData,
-      ),
+            //header
+            headerBuilder: (_, columnData) => GroupHeader(
+              config: config,
+              columnData: columnData,
+            ),
 
-      //footer
-      footerBuilder: (_, columnData) => GroupFooter(
-        config: config,
-        columnData: columnData,
-      ),
-    );
+            //footer
+            footerBuilder: (_, columnData) => GroupFooter(
+              config: config,
+              columnData: columnData,
+            ),
+          ),
+        );
   }
 }

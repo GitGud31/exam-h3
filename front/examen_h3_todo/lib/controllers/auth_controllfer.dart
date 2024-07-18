@@ -2,6 +2,8 @@ import 'package:examen_h3_todo/controllers/profile_controller.dart';
 import 'package:examen_h3_todo/controllers/project_controller.dart';
 import 'package:examen_h3_todo/controllers/task_controller.dart';
 import 'package:examen_h3_todo/models/user_token.dart';
+import 'package:examen_h3_todo/routing/router.dart';
+import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,7 +39,8 @@ class AuthNotifier extends ChangeNotifier {
     ref.invalidate(asyncProjectCrudP);
     ref.invalidate(asyncTaskCrudP);
 
-    //ref.read(routerP).replaceNamed(Routes.login);
+    ref.read(routerP).replaceNamed(Routes.login);
+    
     notifyListeners();
   }
 }

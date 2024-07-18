@@ -2,7 +2,7 @@ import 'package:appflowy_board/appflowy_board.dart';
 import 'package:examen_h3_todo/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final boardControllerP = Provider<AppFlowyBoardController>((ref) {
+final boardControllerP = Provider<AppFlowyBoardController>((_) {
   return AppFlowyBoardController(
     onMoveGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
       L.debug("onMoveGroup", 'Move item from $fromIndex to $toIndex');
