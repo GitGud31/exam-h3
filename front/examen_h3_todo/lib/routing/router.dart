@@ -3,6 +3,7 @@ import 'package:examen_h3_todo/routing/guards/authentication_guard.dart';
 import 'package:examen_h3_todo/routing/routes.dart';
 import 'package:examen_h3_todo/screens/add_profile_screen.dart';
 import 'package:examen_h3_todo/screens/edit_task_screen.dart';
+import 'package:examen_h3_todo/screens/forgot_password_screen.dart';
 import 'package:examen_h3_todo/screens/home_screen.dart';
 import 'package:examen_h3_todo/screens/load_data_screen.dart';
 import 'package:examen_h3_todo/screens/login_screen.dart';
@@ -69,6 +70,12 @@ class AppRouter extends _$AppRouter {
           guards: [
             AuthGuard(ref),
           ],
+        ),
+
+        //forgot password
+        AutoRoute(
+          path: Routes.forgotPassword,
+          page: ForgotPasswordRoute.page,
         ),
       ];
 }

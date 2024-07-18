@@ -187,4 +187,51 @@ class ProfileCrudNotifier extends AsyncNotifier<void> {
       }
     });
   }
+
+  Future<bool> forgotPassword(String email) async {
+    state = const AsyncLoading();
+
+    bool result = false;
+    state = await AsyncValue.guard<void>(() async {
+      final response =
+          await ref.read(swaggerP).profilesForgetPwdGet(email: email);
+
+      if (response.statusCode == 200) {
+        result = true;
+      } else {
+        state = AsyncValue.error(
+          "Code (${response.statusCode}), Forgot pasword: ${response.error as String}",
+          StackTrace.current,
+        );
+      }
+    });
+
+    return result;
+  }
+
+  Future<bool> resetPassword(String email, String code, String password) async {
+    state = const AsyncLoading();
+
+    bool result = false;
+    state = await AsyncValue.guard<void>(() async {
+      final response = await ref.read(swaggerP).profilesResetPwdPost(
+            body: ProfileForgetPwdDto(
+              code: code,
+              email: email,
+              newPwd: password,
+            ),
+          );
+
+      if (response.statusCode == 200) {
+        result = true;
+      } else {
+        state = AsyncValue.error(
+          "Code (${response.statusCode}), Reset pasword: ${response.error as String}",
+          StackTrace.current,
+        );
+      }
+    });
+
+    return result;
+  }
 }
