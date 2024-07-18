@@ -137,10 +137,16 @@ class _SelectProjectScreenState extends ConsumerState<SelectProjectScreen> {
         title: const Text("Select a Project"),
         centerTitle: true,
         actions: [
-          MaterialButton(
-            child: const Icon(Icons.add),
+          TextButton.icon(
+            style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(lightGreen),
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)))),
+            icon: const Icon(Icons.add, color: white),
+            label: const Text("New project", style: TextStyle(color: white)),
             onPressed: () => _addProjectBottomsheet(context),
           ),
+          const Gap(32),
         ],
       ),
       body: Builder(builder: (_) {
