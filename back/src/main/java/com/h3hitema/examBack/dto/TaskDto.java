@@ -22,6 +22,8 @@ public class TaskDto {
     private LocalDateTime createdAt;
     private LocalDateTime deadline;
     private ProfileDto creator;
+    private Integer version;
+
     @Builder.Default
-    private Set<SubTaskDto> subTasks = new HashSet<>();;
+    private Set<SubTaskDto> subTasks = new HashSet<>();
 }

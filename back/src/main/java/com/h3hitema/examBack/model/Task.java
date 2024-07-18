@@ -31,7 +31,7 @@ public class Task extends AbstractEntity {
     @JoinColumn(name = "creator_id")
     private Profile creator;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SubTask> subTasks;
 
     @Enumerated(EnumType.STRING)
