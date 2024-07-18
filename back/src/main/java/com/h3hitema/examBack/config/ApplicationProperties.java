@@ -2,7 +2,6 @@ package com.h3hitema.examBack.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
@@ -15,7 +14,4 @@ import java.net.URL;
 public class ApplicationProperties {
 
     private URL url;
-
-    @Value("${application.mail.from}")
-    private String mailFrom;
 }

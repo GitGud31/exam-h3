@@ -21,12 +21,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AddProfileScreen(),
       );
     },
-    AddTaskRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const AddTaskScreen(),
-      );
-    },
     EditTaskRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -76,20 +70,6 @@ class AddProfileRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'AddProfileRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [AddTaskScreen]
-class AddTaskRoute extends PageRouteInfo<void> {
-  const AddTaskRoute({List<PageRouteInfo>? children})
-      : super(
-          AddTaskRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'AddTaskRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

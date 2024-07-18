@@ -6,7 +6,6 @@ class Routes {
 
   static const String addProfile = "/add-profile";
 
-  static const String addTask = "/add-task";
   static const String editTask = "/edit-task";
 
   static const String loadData = "/load-data";

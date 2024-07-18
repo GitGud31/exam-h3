@@ -288,6 +288,26 @@ abstract class Swagger extends ChopperService {
   });
 
   ///
+  ///@param id
+  ///@param Authorization Bearer token
+  Future<chopper.Response> profilesProjectsTasksSubtasksIdDelete({
+    required int? id,
+    Object? authorization,
+  }) {
+    return _profilesProjectsTasksSubtasksIdDelete(
+        id: id, authorization: authorization?.toString());
+  }
+
+  ///
+  ///@param id
+  ///@param Authorization Bearer token
+  @Delete(path: '/profiles/projects/tasks/subtasks/{id}')
+  Future<chopper.Response> _profilesProjectsTasksSubtasksIdDelete({
+    @Path('id') required int? id,
+    @Header('Authorization') String? authorization,
+  });
+
+  ///
   ///@param firstName
   ///@param Authorization Bearer token
   Future<chopper.Response<List<ProfileDto>>> profilesGet({

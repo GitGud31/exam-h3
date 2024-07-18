@@ -106,21 +106,27 @@ class TaskCrudNotifier extends AsyncNotifier<void> {
     });
   }
 
-  void deleteTask(int id) async {
+  Future<bool> deleteTask(int id) async {
     state = const AsyncLoading();
 
+    bool result = false;
     state = await AsyncValue.guard<void>(() async {
       final token = ref.read(profileTokenP)?.token;
       final response = await ref
           .read(swaggerP)
           .profilesProjectsTasksIdDelete(authorization: token, id: id);
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
+        await getAllTasks();
+        result = true;
+      } else {
         state = AsyncValue.error(
           "Code (${response.statusCode}), Delete Task: ${response.error as String}",
           StackTrace.current,
         );
       }
     });
+
+    return result;
   }
 }

@@ -49,7 +49,7 @@ public class Task extends AbstractEntity {
     )
     @Builder.Default
     private List<Profile> taskGuests = new ArrayList<>();
-
+    
     public Task updateTask(Task task) {
         this.description = task.getDescription();
         this.title = task.getTitle();

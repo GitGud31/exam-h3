@@ -212,6 +212,24 @@ final class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<dynamic>> _profilesProjectsTasksSubtasksIdDelete({
+    required int? id,
+    String? authorization,
+  }) {
+    final Uri $url = Uri.parse('/profiles/projects/tasks/subtasks/${id}');
+    final Map<String, String> $headers = {
+      if (authorization != null) 'Authorization': authorization,
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<List<ProfileDto>>> _profilesGet({
     String? firstName,
     String? authorization,

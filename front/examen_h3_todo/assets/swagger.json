@@ -341,9 +341,9 @@
             },
             "delete": {
                 "tags": [
-                    "sub-task-controller"
+                    "task-controller"
                 ],
-                "operationId": "deleteSubTask",
+                "operationId": "deleteTask",
                 "parameters": [
                     {
                         "name": "id",
@@ -547,6 +547,49 @@
                                 }
                             }
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "sub-task-controller"
+                ],
+                "operationId": "deleteSubTask",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorInfo"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK"
                     }
                 },
                 "security": [
@@ -1177,51 +1220,6 @@
                                 }
                             }
                         }
-                    }
-                },
-                "security": [
-                    {
-                        "Authorization": []
-                    }
-                ]
-            }
-        },
-        "/profiles/projects/tasks{id}": {
-            "delete": {
-                "tags": [
-                    "task-controller"
-                ],
-                "operationId": "deleteTask",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    },
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer token",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorInfo"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK"
                     }
                 },
                 "security": [

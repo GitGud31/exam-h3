@@ -3,8 +3,10 @@ package com.h3hitema.examBack.service;
 import com.h3hitema.examBack.config.ApplicationProperties;
 import com.h3hitema.examBack.dto.MailDataDto;
 import com.h3hitema.examBack.dto.ProfileForgetPwdDto;
+import com.h3hitema.examBack.dto.Response;
 import com.h3hitema.examBack.dto.SendMailStatus;
 import com.h3hitema.examBack.model.Profile;
+import com.h3hitema.examBack.provider.EmailSenderProxy;
 import com.h3hitema.examBack.repository.ProfileRepository;
 import com.h3hitema.examBack.util.Utils;
 import jakarta.transaction.Transactional;
@@ -27,7 +29,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final PasswordEncoder oauthClientPasswordEncoder;
-    private final MailSenderService mailSenderService;
+    private final EmailSenderProxy emailSenderProxy;
     private final ApplicationProperties applicationProperties;
     public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
@@ -71,10 +73,9 @@ public class ProfileService {
         profile.setCodeForgetPwd(forgetCode);
         profile.setCodeExpirationForgetPwd(expiration);
         profileRepository.save(profile);
-        SendMailStatus sendMailStatus = mailSenderService
-                .sendMailForgetPwd(applicationProperties.getMailFrom(),
-                        MailDataDto.builder().to(email).model(buildMailData(expiration, forgetCode)).build());
-        if(sendMailStatus.equals(SendMailStatus.Failed)){
+        Response response = emailSenderProxy
+                .sendConfirmationMail(MailDataDto.builder().to(email).model(buildMailData(expiration, forgetCode)).build());
+        if(response.status().equals(SendMailStatus.Failed.name())){
             throw new IllegalArgumentException("Erreur d'envoi de mail");
         }
     }
