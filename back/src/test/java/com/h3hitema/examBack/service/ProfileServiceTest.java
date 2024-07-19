@@ -10,14 +10,16 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -63,96 +65,122 @@ public class ProfileServiceTest {
         Assertions.assertThat(illegalArgumentException.getMessage()).isEqualTo("The user already exist");
     }
 
+
+
     @Test
-    void testCreateProfile() {
+    void should_return_profile_when_call_getProfileById_and_profile_exists() {
+        Long profileId = 1L;
+        Profile profile = new Profile();
+        profile.setId(profileId);
+        profile.setPassword("aaa");
+        profile.setFirstName("test");
+        profile.setEmail("all@gmail.com");
+        when(profileRepository.findById(profileId)).thenReturn(Optional.of(profile));
+
+        Profile result = profileService.getProfileById(profileId);
+
+        assertNotNull(result);
+        assertEquals(profileId, result.getId());
+        verify(profileRepository).findById(profileId);
+    }
+
+
+    @Test
+    void should_return_profile_when_call_getProfileByEmail_and_profile_exists() {
+        // Given
+        String email = "all@gmail.com";
         Profile profile = new Profile();
         profile.setPassword("aaa");
         profile.setFirstName("test");
-        profile.setEmail("create@gmail.com");
-        Profile savedProfile = profileService.createProfile(profile);
-        assertNotNull(savedProfile.getId());
-        assertEquals("test", savedProfile.getFirstName());
-        profileService.deleteProfile(savedProfile.getId());
-    }
-
-    @Test
-    void testGetProductById() {
-        Profile profile = new Profile();
-        profile.setPassword("aaa");
-        profile.setEmail("byid@gmail.com");
-        profile.setLastName("rahhouti");
-        Profile savedProfile = profileService.createProfile(profile);
-        Profile fetchedProfile = profileService.getProfileById(savedProfile.getId());
-        assertEquals(savedProfile.getId(), fetchedProfile.getId());
-        assertEquals("rahhouti", fetchedProfile.getLastName());
-        profileService.deleteProfile(savedProfile.getId());
-    }
-
-    @Test
-    void testGetProfileByEmail()
-    {
-        Profile profile = new Profile();
-        profile.setPassword("aaa");
-        profile.setEmail("byemail@gmail.com");
-        profileService.createProfile(profile);
-        assertNotNull(profileService.getProfileByEmail("byemail@gmail.com"));
-        profileService.deleteProfile(profile.getId());
-    }
-
-
-    @Test
-    void testUpdateProfile() {
-        Profile profile = new Profile();
-        profile.setPassword("aaa");
-        profile.setEmail("unupdated@gmail.com");
-        Profile savedProfile = profileService.createProfile(profile);
-        savedProfile.setEmail("updated@gmail.com");
-        Profile updatedProfile = profileService.updateProfile(savedProfile.getId(),savedProfile);
-        assertEquals("updated@gmail.com", updatedProfile.getEmail());
-        profileService.deleteProfile(savedProfile.getId());
-    }
-
-    @Test
-    void testDeleteProfile() {
-        Profile profile = new Profile();
-        profile.setPassword("aaa");
-        profile.setEmail("delete@gmail.com");
-        Profile savedProfile = profileService.createProfile(profile);
-        long profileId = savedProfile.getId();
-        profileService.deleteProfile(savedProfile.getId());
-        assertThrows(NoSuchElementException.class, () -> {
-            profileService.getProfileById(profileId);
-        });
-    }
-
-    /*
-    @Test
-    public void testForgetPwdSuccess() {
-        String email = "test@example.com";
-        Profile profile = new Profile();
         profile.setEmail(email);
-
         when(profileRepository.findUserByEmail(email)).thenReturn(Optional.of(profile));
 
-        String forgetCode = "123456";
-        LocalDateTime expiration = LocalDateTime.now().plusHours(1);
-        when(Utils.getRondomNumber(999999)).thenReturn(forgetCode);
+        Profile result = profileService.getProfileByEmail(email);
 
-        MailDataDto mailData = MailDataDto.builder()
-                .to(email)
-                .model(profileService.buildMailData(expiration, forgetCode))
-                .build();
-        ResponseEntity<SendMailStatus> response = ResponseEntity.ok(SendMailStatus.OK);
+        assertNotNull(result);
+        assertEquals(email, result.getEmail());
+        verify(profileRepository).findUserByEmail(email);
+    }
 
-        when(emailSenderProxy.sendConfirmationMail(mailData));
+    @Test
+    void should_update_profile_when_call_updateProfile_and_profile_exists() {
+        Long profileId = 1L;
+        Profile existingProfile = new Profile();
+        existingProfile.setId(profileId);
+        existingProfile.setPassword("oldPassword");
+        existingProfile.setFirstName("oldName");
+        existingProfile.setEmail("old@gmail.com");
 
-        profileService.forgetPwd(email);
+        Profile updatedProfile = new Profile();
+        updatedProfile.setId(profileId);
+        updatedProfile.setPassword("newPassword");
+        updatedProfile.setFirstName("newName");
+        updatedProfile.setEmail("new@gmail.com");
 
-        verify(profileRepository).save(profile);
-        verify(emailSenderProxy).sendConfirmationMail(mailData);
-        assertEquals(forgetCode, profile.getCodeForgetPwd());
-        assertTrue(profile.getCodeExpirationForgetPwd().isAfter(LocalDateTime.now()));
-    }*/
+        when(profileRepository.findById(profileId)).thenReturn(Optional.of(existingProfile));
+        when(profileRepository.save(any(Profile.class))).thenReturn(updatedProfile);
+
+        // When
+        Profile result = profileService.updateProfile(profileId, updatedProfile);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(updatedProfile.getPassword(), result.getPassword());
+        assertEquals(updatedProfile.getFirstName(), result.getFirstName());
+        assertEquals(updatedProfile.getEmail(), result.getEmail());
+        verify(profileRepository).findById(profileId);
+        verify(profileRepository).save(existingProfile);
+    }
+
+    @Test
+    void should_throw_exception_when_call_updateProfile_and_profile_does_not_exist() {
+        // Given
+        Long profileId = 1L;
+        Profile updatedProfile = new Profile();
+        updatedProfile.setId(profileId);
+        updatedProfile.setPassword("newPassword");
+        updatedProfile.setFirstName("newName");
+        updatedProfile.setEmail("new@gmail.com");
+
+        when(profileRepository.findById(profileId)).thenReturn(Optional.empty());
+
+        // When
+        Exception exception = assertThrows(Exception.class, () -> {
+            profileService.updateProfile(profileId, updatedProfile);
+        });
+
+        verify(profileRepository).findById(profileId);
+        verify(profileRepository, never()).save(any(Profile.class));
+    }
+
+
+    @Test
+    void should_delete_profile_when_call_deleteProfile_and_profile_exists() {
+        Long profileId = 1L;
+        doNothing().when(profileRepository).deleteById(profileId);
+
+        // When
+        profileService.deleteProfile(profileId);
+
+        // Then
+        verify(profileRepository).deleteById(profileId);
+    }
+
+    @Test
+    void should_throw_exception_when_call_deleteProfile_and_profile_does_not_exist() {
+        // Given
+        Long profileId = 1L;
+        doThrow(new EmptyResultDataAccessException(1)).when(profileRepository).deleteById(profileId);
+
+        // When
+        Exception exception = assertThrows(Exception.class, () -> {
+            profileService.deleteProfile(profileId);
+        });
+
+        // Then
+        verify(profileRepository).deleteById(profileId);
+    }
+
 
 
 }
