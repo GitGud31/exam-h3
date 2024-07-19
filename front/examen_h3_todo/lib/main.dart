@@ -20,6 +20,7 @@ class App extends ConsumerWidget {
     final router = ref.watch(routerP);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: ref.watch(scaffoldMessengerGlobalKeyP),
       routerConfig: router.config(
         reevaluateListenable: ref.watch(authNotifierP),

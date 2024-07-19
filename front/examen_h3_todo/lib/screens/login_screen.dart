@@ -60,13 +60,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             data: (_) {
               return Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const Gap(100),
+
+                      //title
+                      const Text("Welcome to H3 Trello", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                      
+                      const Gap(80),
+
                       //email
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width / 3,

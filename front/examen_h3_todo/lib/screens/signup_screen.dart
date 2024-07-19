@@ -81,6 +81,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //title
+              const Text("Create your profile",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+
+              const Gap(80),
+
               //first name
               SizedBox(
                 width: MediaQuery.sizeOf(context).width / 3,
